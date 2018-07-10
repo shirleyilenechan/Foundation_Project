@@ -1,5 +1,6 @@
 """Models and database functions for foundation_project db."""
 
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 # Here's where we create the idea of our database. We're getting this through
@@ -22,7 +23,7 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     birthday = db.Column(db.DateTime, nullable=False)
-    password = db.Column(db.string(30), nullable=False)
+    password = db.Column(db.String(50), nullable=False)
     create_date = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
@@ -59,9 +60,9 @@ class Foundation(db.Model):
 
     sku_id = db.Column(db.Integer, nullable=False, primary_key=True)
     product_id = db.Column(db.String(30), db.ForeignKey("brands.product_id"), nullable=False)
-    foundation_hex_code = db.Column(db.String(20), nullable=False)
+    foundation_hex_code = db.Column(db.String(20))
     foundation_target_url = db.Column(db.String(150), nullable=False)
-    shade_image_url = db.Column(db.string(100), nullable=False)
+    shade_image_url = db.Column(db.String(100), nullable=False)
     hero_image_url = db.Column(db.String(100), nullable=False)
 
     brand = db.relationship("Brand", backref=db.backref("foundations"))
@@ -128,13 +129,13 @@ def init_app():
     print("Connected to DB.")
 
 
-def connect_to_db(app):
+def connect_to_db(app, ):
     """Connect the database to our Flask app."""
 
     # Configure to use our database.
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///foundation_project'
     app.config['SQLALCHEMY_ECHO'] = False
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     db.app = app
     db.init_app(app)
 
@@ -143,4 +144,6 @@ if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
 
+    from server import app
     init_app()
+    connect_to_db(app)
