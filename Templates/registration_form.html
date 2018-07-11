@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="first_name">First Name</label>
+      <input type="text" class="form-control" id="first_name" placeholder="First Name">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="last_name">Last Name</label>
+      <input type="text" class="form-control" id="last_name" placeholder="Last Name">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+    <label for="email">Email</label>
+    <input type="text" class="form-control" id="email" placeholder="Email">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="password">Password</label>
+    <input type="text" class="form-control" id="password" placeholder="Password">
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="birthday_month">Month</label>
+      <select id="birthday_month" class="form-control">
+        {% for month in months %}
+        <option> {{ month }} </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="birthday_day">Day</label>
+      <select id="birthday_day" class="form-control">
+        {% for day in days %}
+        <option> {{ day }} </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="birthday_year">Year</label>
+      <select class="form-control" id="birthday_year">
+        {% for year in years %}
+        <option> {{ year }} </option> 
+        {% endfor %}
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Sign in</button>
+</form>
+{% endblock %}

@@ -8,6 +8,7 @@ from server import app
 from datetime import datetime
 import requests
 import json
+from generate_hex import get_hex
 
 
 def load_brand():
@@ -73,7 +74,7 @@ def load_foundation():
         for item in child_sku:
             sku_id = item["skuId"]
             foundation_target_url = "www.sephora.com" + item["targetUrl"]
-            shade_image_url = "www.sephora.com/productimages/sku/s{}+sw.jpg".format(sku_id)
+            shade_image_url = "https://www.sephora.com/productimages/sku/s{}+sw.jpg".format(sku_id)
             hero_image_url = "https://www.sephora.com/productimages/sku/s{}-main-Lhero.jpg".format(sku_id)
 
             foundation = Foundation(sku_id=sku_id, product_id=product_id, foundation_target_url=foundation_target_url,
@@ -84,7 +85,20 @@ def load_foundation():
     # Once we're done, we should commit our work
     db.session.commit()
 
-            
+
+def get_hex_code():
+    foundations = Foundation.query.all()
+
+
+    for foundation in foundations:
+        try:
+            foundation.foundation_hex_code = get_hex(3, "https://" + foundation.shade_image_url)
+        except OSError:
+            print(foundation)
+            continue
+
+    db.session.commit()
+
 
 if __name__ == "__main__":
     connect_to_db(app)
@@ -93,5 +107,6 @@ if __name__ == "__main__":
     db.create_all()
 
     # Import different types of data
-    load_brand()
-    load_foundation()
+    # load_brand()
+    # load_foundation()
+    get_hex_code()

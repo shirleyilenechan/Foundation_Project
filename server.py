@@ -18,10 +18,15 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 
-@app.route('/')
+@app.route('/registration')
 def index():
-    """Homepage."""
-    return render_template("homepage.html")
+    """Render Registration Form"""
+
+    years = range(1990, 2019)
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    days = range(1, 32)
+
+    return render_template("registration_form.html", years=years, months=months, days=days)
 
 
 
