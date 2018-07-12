@@ -109,4 +109,5 @@ if __name__ == "__main__":
     # Import different types of data
     # load_brand()
     # load_foundation()
-    get_hex_code()
+    # get_hex_code()
+    set_val_user_id

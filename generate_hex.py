@@ -26,9 +26,3 @@ def get_hex(num_clusters, img_url):
     peak = codes[index_max]
 
     return rgb2hex(int(peak[0]), int(peak[1]), int(peak[2]))
-
-
-# counts = [10, 4, 22]
-# codes = [(255, 0, 255), (0, 255,0), (0, 0, 255)]
-# index_max = 2
-# peak = (0, 0, 255)

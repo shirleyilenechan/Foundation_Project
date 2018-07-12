@@ -11,7 +11,6 @@ db = SQLAlchemy()
 
 
 ##############################################################################
-# Part 1: Compose ORM
 
 class User(db.Model):
     """User model."""
@@ -23,7 +22,7 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     birthday = db.Column(db.DateTime, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(50))
     create_date = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
