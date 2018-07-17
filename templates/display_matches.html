@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 
+
+{% block head %}
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="/docs/4.1/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+  <a href="/logout"> <input type="button" value="Logout" /> </a>
+</nav>
+
+{% endblock %}
+
+
 {% block content %}
 <div class="album py-5 bg-light">
         <div class="container">

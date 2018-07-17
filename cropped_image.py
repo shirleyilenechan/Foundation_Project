@@ -11,10 +11,9 @@ def crop_face(upload_folder, filename):
     image_file = os.path.join(upload_folder, filename)
     image_content = Image.open(image_file)
     base_64_img = base64.b64encode(image_content.tobytes())
-
     
     # face_locations is a tuple that contains 4 pixels corresponding to the corners of the face
-    # in the form of top, right, bottom, left 
+    # in the form of top, right, bottom, left
     image = face_recognition.load_image_file(image_file)
     face_locations = face_recognition.face_locations(image)
 

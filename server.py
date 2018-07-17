@@ -22,6 +22,10 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 
+@app.route("/")
+def home_page():
+    return redirect("/login")
+
 @app.route('/registration', methods=["GET"])
 def index():
     """Render Registration Form"""
@@ -40,21 +44,31 @@ def add_user_to_db():
     fname = request.form.get("first_name")
     lname = request.form.get("last_name")
     email = request.form.get("email")
+    password = request.form.get("password")
 
-    birth_month = request.form.get("birthday_month")
-    birth_day = request.form.get("birthday_day")
-    birth_year = request.form.get("birthday_year")
-    birthday_string = "{}-{}-{}".format(birth_month, birth_day, birth_year)
-    birthday = datetime.datetime.strptime(birthday_string, "%B-%d-%Y")
+    check_existing_user = User.query.filter(User.email == email).first()
 
-    create_date = datetime.datetime.utcnow()
+    if check_existing_user is None:
+        birth_month = request.form.get("birthday_month")
+        birth_day = request.form.get("birthday_day")
+        birth_year = request.form.get("birthday_year")
+        birthday_string = "{}-{}-{}".format(birth_month, birth_day, birth_year)
+        birthday = datetime.datetime.strptime(birthday_string, "%B-%d-%Y")
 
-    user = User(fname=fname, lname=lname, email=email, birthday=birthday, create_date=create_date)
+        create_date = datetime.datetime.utcnow()
 
-    db.session.add(user)
-    db.session.commit()
+        user = User(fname=fname, lname=lname, email=email, birthday=birthday, create_date=create_date)
 
-    return redirect("/login")
+        user.set_password(password)
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect("/login")
+
+    else:
+        flash("You have Already Registered, Please Login")
+        return redirect("/login")
 
 
 @app.route('/login', methods=["GET"])
@@ -62,18 +76,33 @@ def display_login_form():
     """Render Login Form"""
     return render_template("login_form.html")
 
+
 @app.route("/login", methods=["POST"])
 def user_login():
+    email_address = request.form.get("user_email")
+    password = request.form.get("user_password")
 
+    client = User.query.filter(User.email == email_address).first()
 
-    session["user_email"] = request.form.get("user_email")
-
+    if client is None:
+        flash("No User Found, Please Register")
+        return redirect("/registration")
+    else:
+        if client.check_password(password):
+            session["email"] = email_address
+            return redirect("/submit_image")
+        else:
+            flash("Password is Incorrect, Please try Again")
+            return redirect("/login")
 
 @app.route('/submit_image', methods=["GET"])
 def show_submission_form():
     """Render Upload Form"""
 
-    return render_template("upload_form.html")
+    if "email" in session:
+        return render_template("upload_form.html")
+    else:
+        return redirect("/login")
 
 
 @app.route('/submit_image', methods=["POST"])
@@ -112,28 +141,26 @@ def upload_file():
             foundation = Foundation.query.filter(Foundation.foundation_hex_code == foundation_hex).all()
             foundation_matches.append(foundation)
 
-        print(foundation_matches)
+    email = session["email"]
+    user = User.query.filter(User.email == email).first()
+    time_submitted = datetime.datetime.utcnow()
 
-    # email = session["email"]
-    # user = User.query.filter(User.email == email).first()
-    # time_submitted = datetime.datetime.utcnow()
+    # add image obj to db
+    image_obj = UserImage(hex_code=face_hex_code, user_id=user.user_id,
+                          time_stamp=time_submitted, image_location=file_path)
 
-    # # add image obj to db
-    # image_obj = UserImage(hex_code=face_hex_code, user_id=user.user_id,
-    #                       time_stamp=time_submitted, image_location=file_path)
+    db.session.add(image_obj)
+    db.session.commit()
 
-    # db.session.add(image_obj)
-    # db.session.commit()
-
-    # add matches to our session to be used in the display matches route
-    # add recommendation object to db
+    #  add matches to our session to be used in the display matches route
+    #  add recommendation object to db
     session["matches"] = []
     for lst in foundation_matches:
         for item in lst:
             session["matches"].append(item.sku_id)
-    #         recommendation = Recommendation(image_id=image_obj.image_id, sku_id=item.sku_id)
-    #         db.session.add(recommendation)
-    # db.session.commit()
+            recommendation = Recommendation(image_id=image_obj.image_id, sku_id=item.sku_id)
+            db.session.add(recommendation)
+    db.session.commit()
 
     return redirect("/display_matches")
 
@@ -148,6 +175,16 @@ def display_matches():
             foundation_products.append(foundation_match)
 
     return render_template("display_matches.html", foundation_products=foundation_products)
+
+
+@app.route("/logout")
+def log_out():
+    session.pop("email")
+    session.pop("matches")
+    return redirect("/login")
+
+
+
 
 if __name__ == "__main__":
 

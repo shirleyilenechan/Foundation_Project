@@ -2,7 +2,7 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -19,8 +19,14 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     birthday = db.Column(db.DateTime, nullable=False)
-    password = db.Column(db.String(50))
+    password = db.Column(db.String(110))
     create_date = db.Column(db.DateTime, nullable=False)
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -28,8 +34,6 @@ class User(db.Model):
         return "<User user_id={} fname={} lname={} email={} birthday={}>".format(self.user_id, self.fname,
                                                                                  self.lname, self.email,
                                                                                  self.birthday)
-
-
 class Brand(db.Model):
     """Brand model."""
 
