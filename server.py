@@ -1,10 +1,10 @@
 """Foundation project"""
 
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, redirect, request, flash, session, url_for
+from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug import secure_filename
-from model import User, Brand, Foundation, UserImage, Recommendation, connect_to_db, db
+from model import User, Brand, Foundation, UserImage, Recommendation, connect_to_db, db, Favorite, Review
 import os
 import datetime
 from PIL import Image
@@ -89,17 +89,21 @@ def user_login():
         return redirect("/registration")
     else:
         if client.check_password(password):
-            session["email"] = email_address
-            return redirect("/submit_image")
+            session["user_id"] = client.user_id
+            return redirect("/home")
         else:
             flash("Password is Incorrect, Please try Again")
             return redirect("/login")
+
+@app.route("/home")
+def show_homepage():
+    return render_template("homepage.html")
 
 @app.route('/submit_image', methods=["GET"])
 def show_submission_form():
     """Render Upload Form"""
 
-    if "email" in session:
+    if "user_id" in session:
         return render_template("upload_form.html")
     else:
         return redirect("/login")
@@ -141,8 +145,7 @@ def upload_file():
             foundation = Foundation.query.filter(Foundation.foundation_hex_code == foundation_hex).all()
             foundation_matches.append(foundation)
 
-    email = session["email"]
-    user = User.query.filter(User.email == email).first()
+    user = User.query.get(session["user_id"])
     time_submitted = datetime.datetime.utcnow()
 
     # add image obj to db
@@ -158,7 +161,7 @@ def upload_file():
     for lst in foundation_matches:
         for item in lst:
             session["matches"].append(item.sku_id)
-            recommendation = Recommendation(image_id=image_obj.image_id, sku_id=item.sku_id)
+            recommendation = Recommendation(image_id=image_obj.image_id, user_id= user.user_id, sku_id=item.sku_id)
             db.session.add(recommendation)
     db.session.commit()
 
@@ -167,20 +170,115 @@ def upload_file():
 
 @app.route("/display_matches")
 def display_matches():
-    foundation_products = []
 
-    if "matches" in session:
-        for sku_id in session["matches"]:
-            foundation_match = Foundation.query.filter(Foundation.sku_id == sku_id).first()
-            foundation_products.append(foundation_match)
+    user = User.query.get(session["user_id"])
 
-    return render_template("display_matches.html", foundation_products=foundation_products)
+    recommendations = Recommendation.query.filter(Recommendation.user_id == user.user_id).all()
+
+    print(recommendations)
+
+    if recommendations is None:
+        flash("Please upload an image to see your matches")
+        return redirect("/submit_image")
+    else:
+        foundation_products = []
+
+        for recommendation in recommendations:
+            sku = recommendation.sku_id
+            foundation = Foundation.query.filter(Foundation.sku_id == sku).first()
+            foundation_products.append(foundation)
+
+        favorite_foundations = Favorite.query.filter(Favorite.user_id == user.user_id).all()
+
+        favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
+
+        favorite_skus = set([sku[0] for sku in favorite_skus])
+
+
+        return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus)
+
+
+@app.route("/add_favorite", methods=["POST"])
+def add_favorite_db():
+    """add a favorite to db"""
+
+    sku_id = request.form.get("sku_id")
+
+    foundation = Foundation.query.get(sku_id)
+
+    user = User.query.get(session["user_id"])
+
+    check_favorite = Favorite.query.filter(Favorite.user_id == user.user_id, Favorite.sku_id == sku_id).first()
+
+    if check_favorite is None:
+        user_favorite = Favorite(sku_id=sku_id, user_id=user.user_id)
+
+        db.session.add(user_favorite)
+        db.session.commit()
+        print("status ok")
+        return jsonify({"status": "ok"})
+    else:
+        db.session.delete(check_favorite)
+        db.session.commit()
+        print("status deleted")
+        return jsonify({"status": "deleted"})
+
+@app.route("/add_review", methods=["Post"])
+def add_review_db():
+    """add a review to db"""
+    brand_id = request.form.get("brandid")
+    review_content = request.form.get("reviewContent")
+    user = User.query.get(session["user_id"])
+
+    review = Review(user=user, review_content=review_content, product_id=brand_id)
+
+    db.session.add(review)
+    db.session.commit()
+
+    print("added review")
+
+    return jsonify({"status": "added review"})
+
+@app.route("/view_favorites", methods=["GET"])
+def display_favorites():
+    """render template display_favorites with user favorites"""
+
+    user = User.query.get(session["user_id"])
+
+    for fav in user.favorites:
+
+        hex_code = fav.foundation.foundation_hex_code
+
+        foundations = Foundation.query.filter(Foundation.foundation_hex_code != None).all()
+        foundation_hex_codes = []
+        for foundation in foundations:
+            foundation_hex_codes.append(foundation.foundation_hex_code)
+
+        top_hex_matches = match_foundation_shade(hex_code, foundation_hex_codes)
+
+        fav.closest_matches = Foundation.query.filter(Foundation.foundation_hex_code.in_(top_hex_matches)).all()
+
+    favorite_skus = []
+
+    for fav in user.favorites:
+        favorite_skus.append(fav.sku_id)
+
+    return render_template("display_favorites.html", favorites=user.favorites, favorite_skus=favorite_skus)
+
+@app.route("/brand/<product_id>")
+def display_brand(product_id):
+
+    foundation_brand = Brand.query.filter(Brand.product_id == product_id).first()
+
+    reviews = foundation_brand.reviews
+
+
+    return render_template("display_brand.html", foundation_brand=foundation_brand, reviews=reviews)
 
 
 @app.route("/logout")
 def log_out():
-    session.pop("email")
-    session.pop("matches")
+    session.pop("user_id")
     return redirect("/login")
 
 

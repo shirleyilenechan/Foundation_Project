@@ -164,7 +164,7 @@ CREATE TABLE public.users (
     lname character varying(30) NOT NULL,
     email character varying(50) NOT NULL,
     birthday timestamp without time zone NOT NULL,
-    password character varying(50),
+    password character varying(110),
     create_date timestamp without time zone NOT NULL
 );
 

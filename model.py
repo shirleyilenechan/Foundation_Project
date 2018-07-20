@@ -96,7 +96,6 @@ class UserImage(db.Model):
                                                                                                        self.time_stamp,
                                                                                                        self.image_location)
 
-
 class Recommendation(db.Model):
     """Recommendations Model"""
 
@@ -105,9 +104,11 @@ class Recommendation(db.Model):
     recommendation_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
     image_id = db.Column(db.Integer, db.ForeignKey("images.image_id"), nullable=False)
     sku_id = db.Column(db.Integer, db.ForeignKey("foundations.sku_id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
 
     foundation = db.relationship("Foundation", backref=db.backref("recommendations"))
     userimage = db.relationship("UserImage", backref=db.backref("recommendations"))
+    user = db.relationship("User", backref=db.backref("recommendations"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -115,7 +116,34 @@ class Recommendation(db.Model):
         return "<Recommendation recommendation_id={} image_id{} sku_id={}>".format(self.recommendation_id,
                                                                                    self.image_id, self.sku_id)
 
+class Favorite(db.Model):
+    """Favorites Model"""
 
+    __tablename__ = "favorites"
+
+    favorite_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
+    sku_id = db.Column(db.Integer, db.ForeignKey("foundations.sku_id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+
+    foundation = db.relationship("Foundation", backref=db.backref("favorites"))
+    user = db.relationship("User", backref=db.backref("favorites"))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Favorite favorite_id={} user_id={} sku_id={}>".format(self.favorite_id, self.user_id, self.sku_id)
+
+class Review(db.Model):
+    """Reviews Model"""
+    __tablename__ = "reviews"
+
+    review_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    product_id = db.Column(db.String(30), db.ForeignKey("brands.product_id"), nullable=False)
+    review_content = db.Column(db.String(250))
+
+    user = db.relationship("User", backref=db.backref("reviews"))
+    product = db.relationship("Brand", backref=db.backref("reviews"))
 
 ##############################################################################
 # Helper functions
