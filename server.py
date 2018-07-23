@@ -12,6 +12,7 @@ import requests
 import json
 from generate_hex import get_hex, match_foundation_shade
 from cropped_image import crop_face
+from get_twitter_posts import load_tweets
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg"])
 
@@ -155,12 +156,9 @@ def upload_file():
     db.session.add(image_obj)
     db.session.commit()
 
-    #  add matches to our session to be used in the display matches route
     #  add recommendation object to db
-    session["matches"] = []
     for lst in foundation_matches:
         for item in lst:
-            session["matches"].append(item.sku_id)
             recommendation = Recommendation(image_id=image_obj.image_id, user_id= user.user_id, sku_id=item.sku_id)
             db.session.add(recommendation)
     db.session.commit()
@@ -175,27 +173,21 @@ def display_matches():
 
     recommendations = Recommendation.query.filter(Recommendation.user_id == user.user_id).all()
 
-    print(recommendations)
+    foundation_products = []
 
-    if recommendations is None:
-        flash("Please upload an image to see your matches")
-        return redirect("/submit_image")
-    else:
-        foundation_products = []
+    for recommendation in recommendations:
+        sku = recommendation.sku_id
+        foundation = Foundation.query.filter(Foundation.sku_id == sku).first()
+        foundation_products.append(foundation)
 
-        for recommendation in recommendations:
-            sku = recommendation.sku_id
-            foundation = Foundation.query.filter(Foundation.sku_id == sku).first()
-            foundation_products.append(foundation)
+    favorite_foundations = Favorite.query.filter(Favorite.user_id == user.user_id).all()
 
-        favorite_foundations = Favorite.query.filter(Favorite.user_id == user.user_id).all()
+    favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
 
-        favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
-
-        favorite_skus = set([sku[0] for sku in favorite_skus])
+    favorite_skus = set([sku[0] for sku in favorite_skus])
 
 
-        return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus)
+    return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus)
 
 
 @app.route("/add_favorite", methods=["POST"])
@@ -212,15 +204,12 @@ def add_favorite_db():
 
     if check_favorite is None:
         user_favorite = Favorite(sku_id=sku_id, user_id=user.user_id)
-
         db.session.add(user_favorite)
         db.session.commit()
-        print("status ok")
         return jsonify({"status": "ok"})
     else:
         db.session.delete(check_favorite)
         db.session.commit()
-        print("status deleted")
         return jsonify({"status": "deleted"})
 
 @app.route("/add_review", methods=["Post"])
@@ -234,8 +223,6 @@ def add_review_db():
 
     db.session.add(review)
     db.session.commit()
-
-    print("added review")
 
     return jsonify({"status": "added review"})
 
@@ -272,8 +259,18 @@ def display_brand(product_id):
 
     reviews = foundation_brand.reviews
 
+    foundation_name = foundation_brand.brand_name
 
-    return render_template("display_brand.html", foundation_brand=foundation_brand, reviews=reviews)
+    tweets = load_tweets(foundation_name)
+
+    tweets_lst = []
+
+    for tweet in tweets:
+       tweet_str = json.dumps(tweet._json)
+       tweet_dict = json.loads(tweet_str)
+       tweets_lst.append(tweet_dict)
+
+    return render_template("display_brand.html", foundation_brand=foundation_brand, reviews=reviews, tweets=tweets_lst)
 
 
 @app.route("/logout")

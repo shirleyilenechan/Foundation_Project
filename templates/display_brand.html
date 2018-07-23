@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends"base.html"%}
 
 
 {% block head %}
 <nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <img src="/docs/4.1/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
-   <a href="/display_matches">View My Matches</a> <a href="/logout"> <a href="/logout"> <input type="button" value="Logout" /> </a>
+  <a class="navbar-brand"href="#">
+    <img src="/docs/4.1/assets/brand/bootstrap-solid.svg"width="30"height="30"alt="">
+   <a href="/display_matches">View My Matches</a> <a href="/logout"> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
 {% endblock %}
@@ -15,17 +15,24 @@
 
 <div style="height:300px;width:600px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
     {% for review in reviews %}
-        <p style="width:250%;" id="review_content"> {{ review.review_content }} </p>
+        <p style="width:250%;"id="review_content"> {{review.review_content}} </p>
         <br>
     {% endfor %}
 </div>
 
+{% for tweet in tweets %}
+  {% if"media"in tweet["entities"] %} 
+  <div> <img src="{{tweet["entities"]["media"][0]["media_url"] }}"> </div>
+    <br>
+    {% endif %}
+    {% endfor %}
+
 <form action="/brand/{{foundation_brand.product_id}}" id="review_form">
   <div class="form-group">
     <label for="foundation_review">Please Leave a Review for {{foundation_brand.brand_name}} Here</label>
-    <textarea class="form-control" id="foundation_review" rows="3"></textarea>
+    <textarea class="form-control"id="foundation_review"rows="3"></textarea>
   </div>
-  <button type="submit" form="review_form" id="submit_review" data-brandid="{{foundation_brand.product_id}}" value="Submit My Review">Submit My Review</button>
+  <button type="submit"form="review_form"id="submit_review"data-brandid="{{foundation_brand.product_id}}" value="Submit My Review">Submit My Review</button>
 </form>
 
 <script src="/static/brand_review.js"> </script>

@@ -19,3 +19,4 @@ function submitFavorites(evt){
 
 $(".heart").on("click", submitFavorites); 
 
+

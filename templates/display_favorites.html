@@ -1,15 +1,14 @@
-{% extends "base.html" %}
+{% extends"base.html"%}
 
 
 {% block head %}
 <nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <img src="http://cdn.shopify.com/s/files/1/1533/1801/products/Foundation_Swatch_Main_grande.jpg?v=1523386872" width="30" height="30" alt="">
-   <a href="/display_matches">View My Matches</a> <a href="/logout"> <a href="/logout"> <input type="button" value="Logout" /> </a>
+  <a class="navbar-brand"href="#">
+    <img src="http://cdn.shopify.com/s/files/1/1533/1801/products/Foundation_Swatch_Main_grande.jpg?v=1523386872"width="30"height="30"alt="">
+   <a href="/display_matches">View My Matches</a> <a href="/logout"> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
 {% endblock %}
-
 
 {% block content %}
 <div class="album py-5 bg-light">
@@ -19,15 +18,11 @@
             {% for favorite in favorites %}
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <a href="/brand/{{ favorite.foundation.brand.product_id}}"> <img width="200" 
-                name="foundation_hero_image"
-                type ="button"
-                height="200"
-                src="{{ favorite.foundation.hero_image_url }}">
+                <a href="/brand/{{favorite.foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{favorite.foundation.hero_image_url}}">
                 </a>
                 
                 <div class="card-body"> 
-                  <p class="card-text"> {{ favorite.foundation.brand.brand_name }}   
+                  <p class="card-text"> {{favorite.foundation.brand.brand_name}}   
                     <img data-sku={{favorite.foundation.sku_id}}
                           class="heart" 
                           type="button" 
@@ -39,23 +34,38 @@
                           src="http://www.clker.com/cliparts/3/2/2/u/b/b/white-heart-with-black-outline-md.png"
                           {% endif %} > 
                   </p>
-                  <p class="card-text">{{ favorite.foundation.brand.display_name }}</p>
-                  <p class="card-text"> Avg Customer Rating: {{ favorite.foundation.brand.rating }} </p> 
-                  <div> Shade Sample : <img id="shade_url" src="https://{{ favorite.foundation.shade_image_url }}"> </div>
+                  <p class="card-text">{{favorite.foundation.brand.display_name}}</p>
+                  <p class="card-text"> Avg Customer Rating: {{favorite.foundation.brand.rating}} </p> 
+                  <div> Shade Sample : <img id="shade_url"src="https://{{favorite.foundation.shade_image_url}}"> </div>
                   <br>
                   <div> You May Also Like:
                         {% for match in favorite.closest_matches %}
                         <a href="https://{{match.foundation_target_url}}"> 
-                          <img src="{{ match.hero_image_url }}" height="20" width="20" type="button"> 
+                          <img class="icon"src="{{match.hero_image_url}}" height="20" width="20" type="button"> 
                         </a>
+                        <div class="small_card"id="{{match.sku_id}}"> 
+                            <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{match.hero_image_url}}">
+                            <div> {{match.brand.brand_name}} <img data-sku={{favorite.foundation.sku_id}}
+                          class="heart" 
+                          type="button" 
+                          height="20" 
+                          width="20"
+                          {% if match.sku_id in favorite_skus %}
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png"
+                          {% else %}
+                          src="http://www.clker.com/cliparts/3/2/2/u/b/b/white-heart-with-black-outline-md.png"
+                          {% endif %} > </div>
+                            <div> {{match.brand.display_name}} </div>
+                            <div> {{match.brand.rating}} <div>
+                            <div> Shade Sample : <img src="https://{{match.shade_image_url}}"> </div> 
+                          </div> 
                         {% endfor %}
-                    </div>
-
+                    </div> 
                   <br>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a href="https://{{ favorite.foundation.foundation_target_url }}">
-                        <input type="button" value="View This Product" />
+                      <a href="https://{{favorite.foundation.foundation_target_url}}">
+                        <input type="button"value="View This Product"/>
                         </a>
                     </div>
                   </div>
