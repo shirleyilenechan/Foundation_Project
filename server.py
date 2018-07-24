@@ -261,14 +261,7 @@ def display_brand(product_id):
 
     foundation_name = foundation_brand.brand_name
 
-    tweets = load_tweets(foundation_name)
-
-    tweets_lst = []
-
-    for tweet in tweets:
-       tweet_str = json.dumps(tweet._json)
-       tweet_dict = json.loads(tweet_str)
-       tweets_lst.append(tweet_dict)
+    tweets_lst = load_tweets(foundation_name)
 
     return render_template("display_brand.html", foundation_brand=foundation_brand, reviews=reviews, tweets=tweets_lst)
 

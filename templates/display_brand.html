@@ -12,7 +12,6 @@
 
 
 {% block content %}
-
 <div style="height:300px;width:600px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
     {% for review in reviews %}
         <p style="width:250%;"id="review_content"> {{review.review_content}} </p>
@@ -20,12 +19,19 @@
     {% endfor %}
 </div>
 
-{% for tweet in tweets %}
-  {% if"media"in tweet["entities"] %} 
-  <div> <img src="{{tweet["entities"]["media"][0]["media_url"] }}"> </div>
-    <br>
-    {% endif %}
-    {% endfor %}
+  <div id="brand_carousel"class="carousel slide"data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{{tweets[0] }}">
+      </div>
+      {% for tweet in tweets[1:] %}
+        <div class="carousel-item">
+          <img src="{{tweet}}">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
 
 <form action="/brand/{{foundation_brand.product_id}}" id="review_form">
   <div class="form-group">
