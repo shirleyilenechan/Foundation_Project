@@ -20,3 +20,6 @@ function submitFavorites(evt){
 $(".heart").on("click", submitFavorites); 
 
 
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});

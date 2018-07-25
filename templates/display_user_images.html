@@ -1,0 +1,21 @@
+
+{% extends"base.html"%}
+
+
+{% block head %}
+<nav class="navbar navbar-light bg-light">
+    <img src="http://cdn.shopify.com/s/files/1/1533/1801/products/Foundation_Swatch_Main_grande.jpg?v=1523386872"width="30"height="30"alt="">
+  <a href="/home">Home</a>  <a href='/submit_image'>Submit an Image for Matching</a> <a href="/view_favorites">View My Favorites</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
+</nav>
+
+{% endblock %}
+
+
+{% block content %}
+
+{% for image in user_images %}
+<a href="/display_matches/{{image.image_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{image.image_location[36:]}}">
+</a>
+{% endfor %}
+
+{% endblock %}

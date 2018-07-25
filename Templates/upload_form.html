@@ -1,16 +1,28 @@
+{% extends'base.html'%}
 
-{% extends 'base.html' %}
+{% block head %}
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand"href="#">
+    <img src="http://cdn.shopify.com/s/files/1/1533/1801/products/Foundation_Swatch_Main_grande.jpg?v=1523386872"width="30"height="30"alt="">
+    <a href="/home">Home</a> <a href="/select_image">Select an Image to View My Matches</a> <a href="/view_favorites">View My Favorites</a> <a href="/logout"> <a href="/logout"> <input type="button"value="Logout"/> </a>
+</nav>
+
+{% endblock %}
+
+
 
 {% block content %}
 
-<form action = "/submit_image" method="post" enctype="multipart/form-data">
+<form action ="/submit_image"method="post"enctype="multipart/form-data">
  <div>
    <label for="userimage">Choose Image File to Upload</label>
-   <input type="file" id="userimage" name="userimage" accept=".png, .jpg, .jpeg">
+   <input type="file"id="userimage"name="userimage"accept=".png, .jpg, .jpeg">
  </div>
  <div>
    <button>Submit</button>
  </div>
 </form>
+
+<script src="/static/checkfilesize.js"></script>
 
 {% endblock %}

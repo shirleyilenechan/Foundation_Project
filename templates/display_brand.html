@@ -5,20 +5,21 @@
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand"href="#">
     <img src="/docs/4.1/assets/brand/bootstrap-solid.svg"width="30"height="30"alt="">
-   <a href="/display_matches">View My Matches</a> <a href="/logout"> <a href="/logout"> <input type="button"value="Logout"/> </a>
+    <a href="/home">Home</a> <a href='/submit_image'>Submit an Image for Matching</a> <a href="/select_image">Select an Image to View My Matches</a>  <a href="/view_favorites">View My Favorites</a> <a href="/logout"> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
 {% endblock %}
 
 
 {% block content %}
-<div style="height:300px;width:600px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+<div style="height:300px;width:800px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
     {% for review in reviews %}
         <p style="width:250%;"id="review_content"> {{review.review_content}} </p>
         <br>
     {% endfor %}
 </div>
 
+  {% if tweets != [] %}
   <div id="brand_carousel"class="carousel slide"data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -31,6 +32,9 @@
       {% endfor %}
     </div>
   </div>
+  {% else %}
+    <div> <p> No Brand Images at This Time </p> </div>
+  {% endif %}
 
 
 <form action="/brand/{{foundation_brand.product_id}}" id="review_form">

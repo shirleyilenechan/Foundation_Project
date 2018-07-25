@@ -163,15 +163,23 @@ def upload_file():
             db.session.add(recommendation)
     db.session.commit()
 
-    return redirect("/display_matches")
+    return redirect("/select_image")
 
+@app.route("/select_image")
+def display_user_image():
+    user = User.query.get(session["user_id"])
+    user_images = user.userimages
 
-@app.route("/display_matches")
-def display_matches():
+    return render_template("display_user_images.html", user_images=user_images)
+
+@app.route("/display_matches/<image_id>")
+def display_matches(image_id):
 
     user = User.query.get(session["user_id"])
 
-    recommendations = Recommendation.query.filter(Recommendation.user_id == user.user_id).all()
+    recommendations = Recommendation.query.filter(Recommendation.user_id == user.user_id, Recommendation.image_id == image_id).all()
+
+    image = UserImage.query.filter(UserImage.image_id == image_id).first()
 
     foundation_products = []
 
@@ -187,7 +195,7 @@ def display_matches():
     favorite_skus = set([sku[0] for sku in favorite_skus])
 
 
-    return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus)
+    return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus, image=image)
 
 
 @app.route("/add_favorite", methods=["POST"])

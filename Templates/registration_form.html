@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends'base.html'%}
 
 {% block content %}
 <form action ='/registration', method="post">
@@ -6,50 +6,49 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="first_name">First Name</label>
-      <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First Name">
+      <input type="text"class="form-control"name="first_name"id="first_name"placeholder="First Name">
     </div>
     <div class="form-group col-md-6">
       <label for="last_name">Last Name</label>
-      <input type="text" class="form-control" name= "last_name" id="last_name" placeholder="Last Name">
+      <input type="text"class="form-control"name="last_name"id="last_name"placeholder="Last Name">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-6">
     <label for="email">Email</label>
-    <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+    <input type="text"class="form-control"name="email"id="email"placeholder="Email">
   </div>
   <div class="form-group col-md-6">
     <label for="password">Password</label>
-    <input type="text" class="form-control" name="password" id="password" placeholder="Password">
+    <input type="text"class="form-control"name="password"id="password"placeholder="Password">
   </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="birthday_month">Month</label>
-      <select name="birthday_month" id="birthday_month" class="form-control">
+      <select name="birthday_month"id="birthday_month"class="form-control">
         {% for month in months %}
-        <option value={{ month }}> {{ month }} </option>
+        <option value={{ month}}> {{month}} </option>
         {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-4">
       <label for="birthday_day">Day</label>
-      <select name="birthday_day" id="birthday_day" class="form-control">
+      <select name="birthday_day"id="birthday_day"class="form-control">
         {% for day in days %}
-        <option value={{ day }}>{{ day }} </option>
+        <option value={{ day}}>{{day}} </option>
         {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-4">
       <label for="birthday_year">Year</label>
-      <select name="birthday_year" class="form-control" id="birthday_year">
+      <select name="birthday_year"class="form-control"id="birthday_year">
         {% for year in years %}
-        <option value={{ year }}> {{ year }} </option> 
+        <option value={{ year}}> {{year}} </option> 
         {% endfor %}
     </div>
   </div>
-
-  <input type="submit" class="btn btn-primary" value = "Sign In">
+  <input type="submit"class="btn btn-primary"value ="Sign In">
 
 </form>
 {% endblock %}

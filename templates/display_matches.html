@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends"base.html"%}
 
 
 {% block head %}
 <nav class="navbar navbar-light bg-light">
-    <img src="http://cdn.shopify.com/s/files/1/1533/1801/products/Foundation_Swatch_Main_grande.jpg?v=1523386872" width="30" height="30" alt="">
-  <a href="/view_favorites">View My Favorites</a> <a href="/logout"> <input type="button" value="Logout" /> </a>
+    <img src="http://cdn.shopify.com/s/files/1/1533/1801/products/Foundation_Swatch_Main_grande.jpg?v=1523386872"width="30"height="30"alt="">
+  <a href="/home">Home</a>  <a href='/submit_image'>Submit an Image for Matching</a> <a href="/view_favorites">View My Favorites</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
 {% endblock %}
@@ -18,16 +18,12 @@
             {% for foundation in foundation_products %}
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <a href="/brand/{{ foundation.brand.product_id}}"> <img width="200" 
-                name="foundation_hero_image"
-                type ="button"
-                height="200"
-                src="{{ foundation.hero_image_url }}">
+                <a href="/brand/{{foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{foundation.hero_image_url}}">
                 </a>
                 
                 
                 <div class="card-body"> 
-                  <p class="card-text"> {{ foundation.brand.brand_name }}    
+                  <p class="card-text"> {{foundation.brand.brand_name}}    
                     <img data-sku="{{foundation.sku_id}}" 
                           class="heart" 
                           type="button" 
@@ -39,14 +35,17 @@
                           src="http://www.clker.com/cliparts/3/2/2/u/b/b/white-heart-with-black-outline-md.png"
                           {% endif %} > 
                   </p>
-                  <p class="card-text">{{ foundation.brand.display_name }}</p>
-                  <p class="card-text"> Avg Customer Rating: {{ foundation.brand.rating }} </p> 
-                  <div> Shade Sample : <img id="shade_url" src="https://{{ foundation.shade_image_url }}"> </div>
-                  <br> 
+                  <p class="card-text">{{foundation.brand.display_name}}</p>
+                  <p class="card-text"> Avg Customer Rating: {{foundation.brand.rating}} </p> 
+                  <div> Shade Sample : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='80'width='80'src='https://{{foundation.shade_image_url}}'><img height='80'width='80'src='{{image.image_location[36:]}}'></div>" >
+                    <img src="https://{{foundation.shade_image_url}}">
+                  </a>
+                </div>
+                  <br>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a href="https://{{ foundation.foundation_target_url }}">
-                        <input type="button" value="View This Product" />
+                      <a href="https://{{foundation.foundation_target_url}}">
+                        <input type="button"value="View This Product"/>
                         </a>
                     </div>
                   </div>

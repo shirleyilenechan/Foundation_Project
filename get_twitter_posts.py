@@ -21,27 +21,33 @@ def load_tweets(brand):
         twitter_handle = line[1]
 
         if foundation_brand == brand:
-            results = []
-            count = 0
 
-            while len(results) < 20 and count < 10:
-                if count == 0:
-                    response = api.GetUserTimeline(screen_name=twitter_handle[1:], include_rts=False, count=200, exclude_replies=True)
-                else:
-                    response = api.GetUserTimeline(screen_name=twitter_handle[1:], max_id=max_id, include_rts=False, count=200, exclude_replies=True)
+            if not twitter_handle:
+                return []
+            else:
+                results = []
+                count = 0
 
-                tweets_lst = []
+                while len(results) < 20 and count < 10:
+                    if count == 0:
+                        response = api.GetUserTimeline(screen_name=twitter_handle[1:], include_rts=False, count=200, exclude_replies=True)
+                    else:
+                        response = api.GetUserTimeline(screen_name=twitter_handle[1:], max_id=max_id, include_rts=False, count=200, exclude_replies=True)
 
-                for tweet in response:
-                    tweets_lst.append(tweet._json)
+                    tweets_lst = []
 
-                for status in tweets_lst:
-                    if "entities" in status:
-                        if "media" in status["entities"]:
-                            results.append(status["entities"]["media"][0]["media_url"])
+                    for tweet in response:
+                        tweets_lst.append(tweet._json)
 
-                max_id = tweets_lst[-1]["id"]
+                    for status in tweets_lst:
+                        if "entities" in status:
+                            if "media" in status["entities"]:
+                                results.append(status["entities"]["media"][0]["media_url"])
+                    if len(tweets_lst) > 1:
+                        max_id = tweets_lst[-1]["id"]
+                    else:
+                        return []
 
-                count = count + 1
+                    count = count + 1
 
-            return results
+                return results
