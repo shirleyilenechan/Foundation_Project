@@ -20,7 +20,7 @@ def get_hex_url(num_clusters, img_url):
 
 def get_hex(num_clusters, img):
     # https://stackoverflow.com/questions/3241929/python-find-dominant-most-common-color-in-an-image/3242290
-
+    np.random.seed(42)
     # turn image into numpy array
     ar = np.asarray(img)
     # (num_row, num_column, num_colors)

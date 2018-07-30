@@ -14,7 +14,7 @@
 {% block content %}
 
 {% for image in user_images %}
-<a href="/display_matches/{{image.image_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{image.image_location[36:]}}">
+<a href="/display_matches/{{image.image_id}}"> <img width="200"name="user_image"type ="button"height="200"src="{{image.image_location[36:]}}">
 </a>
 {% endfor %}
 

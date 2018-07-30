@@ -3,6 +3,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
+
 
 db = SQLAlchemy()
 
@@ -19,14 +21,15 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     birthday = db.Column(db.DateTime, nullable=False)
-    password = db.Column(db.String(110))
-    create_date = db.Column(db.DateTime, nullable=False)
+    password = db.Column(db.String(110), nullable=False)
+    create_date = db.Column(db.DateTime)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -145,8 +148,16 @@ class Review(db.Model):
     user = db.relationship("User", backref=db.backref("reviews"))
     product = db.relationship("Brand", backref=db.backref("reviews"))
 
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Review review_id={} user_id={} product_id={} review_content={}>".format(self.review_id, self.user_id,
+                                                                                         self.product_id, self.review_content)
+
+
 ##############################################################################
 # Helper functions
+
 
 def init_app():
     from flask import Flask
@@ -156,10 +167,10 @@ def init_app():
     print("Connected to DB.")
 
 
-def connect_to_db(app, ):
+def connect_to_db(app, db_uri='postgres:///foundation_project'):
     """Connect the database to our Flask app."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///foundation_project'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_ECHO'] = False
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     db.app = app

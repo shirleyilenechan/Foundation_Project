@@ -5,8 +5,6 @@ import urllib.parse
 
 def load_tweets(brand):
 
-    print(brand)
-
     api = twitter.Api(
         consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
         consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
@@ -46,7 +44,7 @@ def load_tweets(brand):
                     if len(tweets_lst) > 1:
                         max_id = tweets_lst[-1]["id"]
                     else:
-                        return []
+                        return results
 
                     count = count + 1
 

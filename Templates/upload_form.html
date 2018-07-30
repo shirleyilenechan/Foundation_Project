@@ -16,10 +16,10 @@
 <form action ="/submit_image"method="post"enctype="multipart/form-data">
  <div>
    <label for="userimage">Choose Image File to Upload</label>
-   <input type="file"id="userimage"name="userimage"accept=".png, .jpg, .jpeg">
+   <input type="file"id="userimage"name="userimage"accept=".jpg, .jpeg, .png">
  </div>
  <div>
-   <button>Submit</button>
+   <button id="submitButton"onclick="return checkFileSize(event)">Submit</button>
  </div>
 </form>
 

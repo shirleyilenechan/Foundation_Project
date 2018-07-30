@@ -27,6 +27,7 @@ app.jinja_env.undefined = StrictUndefined
 def home_page():
     return redirect("/login")
 
+
 @app.route('/registration', methods=["GET"])
 def index():
     """Render Registration Form"""
@@ -75,6 +76,7 @@ def add_user_to_db():
 @app.route('/login', methods=["GET"])
 def display_login_form():
     """Render Login Form"""
+    flash("WELCOME!")
     return render_template("login_form.html")
 
 
@@ -82,7 +84,6 @@ def display_login_form():
 def user_login():
     email_address = request.form.get("user_email")
     password = request.form.get("user_password")
-
     client = User.query.filter(User.email == email_address).first()
 
     if client is None:
@@ -96,9 +97,15 @@ def user_login():
             flash("Password is Incorrect, Please try Again")
             return redirect("/login")
 
+
 @app.route("/home")
 def show_homepage():
-    return render_template("homepage.html")
+    if "user_id" in session:
+        user = User.query.get(session["user_id"])
+        return render_template("homepage.html", user=user)
+    else:
+        return redirect("/login")
+
 
 @app.route('/submit_image', methods=["GET"])
 def show_submission_form():
@@ -137,6 +144,8 @@ def upload_file():
         for foundation in foundations:
             foundation_hex_codes.append(foundation.foundation_hex_code)
 
+        foundation_hex_codes = list(set(foundation_hex_codes))
+
         # get the top 6 hex codes of the foundations that match the face
         top_hex_matches = match_foundation_shade(face_hex_code, foundation_hex_codes)
         foundation_matches = []
@@ -159,106 +168,131 @@ def upload_file():
     #  add recommendation object to db
     for lst in foundation_matches:
         for item in lst:
-            recommendation = Recommendation(image_id=image_obj.image_id, user_id= user.user_id, sku_id=item.sku_id)
+            recommendation = Recommendation(image_id=image_obj.image_id, user_id=user.user_id, sku_id=item.sku_id)
             db.session.add(recommendation)
     db.session.commit()
 
     return redirect("/select_image")
 
+
 @app.route("/select_image")
 def display_user_image():
-    user = User.query.get(session["user_id"])
-    user_images = user.userimages
+    """display user images as a link which allows them to select which image they would like to see matches for"""
 
-    return render_template("display_user_images.html", user_images=user_images)
+    if "user_id" in session:
+        user = User.query.get(session["user_id"])
+        user_images = user.userimages
+
+        return render_template("display_user_images.html", user_images=user_images)
+    else:
+        return redirect("/login")
+
 
 @app.route("/display_matches/<image_id>")
 def display_matches(image_id):
 
-    user = User.query.get(session["user_id"])
+    if "user_id" in session:
 
-    recommendations = Recommendation.query.filter(Recommendation.user_id == user.user_id, Recommendation.image_id == image_id).all()
+        user = User.query.get(session["user_id"])
 
-    image = UserImage.query.filter(UserImage.image_id == image_id).first()
+        recommendations = Recommendation.query.filter(Recommendation.user_id == user.user_id, Recommendation.image_id == image_id).all()
 
-    foundation_products = []
+        image = UserImage.query.filter(UserImage.image_id == image_id).first()
 
-    for recommendation in recommendations:
-        sku = recommendation.sku_id
-        foundation = Foundation.query.filter(Foundation.sku_id == sku).first()
-        foundation_products.append(foundation)
+        foundation_products = []
 
-    favorite_foundations = Favorite.query.filter(Favorite.user_id == user.user_id).all()
+        for recommendation in recommendations:
+            sku = recommendation.sku_id
+            foundation = Foundation.query.filter(Foundation.sku_id == sku).first()
+            foundation_products.append(foundation)
 
-    favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
+        favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
 
-    favorite_skus = set([sku[0] for sku in favorite_skus])
+        favorite_skus = set(sku[0] for sku in favorite_skus)
 
+        return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus, image=image)
 
-    return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus, image=image)
+    else:
+        return redirect("/login")
 
 
 @app.route("/add_favorite", methods=["POST"])
 def add_favorite_db():
     """add a favorite to db"""
 
-    sku_id = request.form.get("sku_id")
+    if "user_id" in session:
 
-    foundation = Foundation.query.get(sku_id)
+        sku_id = request.form.get("sku_id")
 
-    user = User.query.get(session["user_id"])
+        user = User.query.get(session["user_id"])
 
-    check_favorite = Favorite.query.filter(Favorite.user_id == user.user_id, Favorite.sku_id == sku_id).first()
+        check_favorite = Favorite.query.filter(Favorite.user_id == user.user_id, Favorite.sku_id == sku_id).first()
 
-    if check_favorite is None:
-        user_favorite = Favorite(sku_id=sku_id, user_id=user.user_id)
-        db.session.add(user_favorite)
-        db.session.commit()
-        return jsonify({"status": "ok"})
+        if check_favorite is None:
+            user_favorite = Favorite(sku_id=sku_id, user_id=user.user_id)
+            db.session.add(user_favorite)
+            db.session.commit()
+            return jsonify({"status": "ok"})
+        else:
+            db.session.delete(check_favorite)
+            db.session.commit()
+            return jsonify({"status": "deleted"})
+
     else:
-        db.session.delete(check_favorite)
-        db.session.commit()
-        return jsonify({"status": "deleted"})
+        return redirect("/login")
+
 
 @app.route("/add_review", methods=["Post"])
 def add_review_db():
     """add a review to db"""
-    brand_id = request.form.get("brandid")
-    review_content = request.form.get("reviewContent")
-    user = User.query.get(session["user_id"])
 
-    review = Review(user=user, review_content=review_content, product_id=brand_id)
+    if "user_id" in session:
 
-    db.session.add(review)
-    db.session.commit()
+        brand_id = request.form.get("brandid")
+        review_content = request.form.get("reviewContent")
+        user = User.query.get(session["user_id"])
 
-    return jsonify({"status": "added review"})
+        review = Review(user=user, review_content=review_content, product_id=brand_id)
+
+        db.session.add(review)
+        db.session.commit()
+
+        return jsonify({"status": "added review"})
+
+    else:
+        return redirect("/login")
+
 
 @app.route("/view_favorites", methods=["GET"])
 def display_favorites():
     """render template display_favorites with user favorites"""
 
-    user = User.query.get(session["user_id"])
+    if "user_id" in session:
+        user = User.query.get(session["user_id"])
 
-    for fav in user.favorites:
+        for fav in user.favorites:
 
-        hex_code = fav.foundation.foundation_hex_code
+            hex_code = fav.foundation.foundation_hex_code
 
-        foundations = Foundation.query.filter(Foundation.foundation_hex_code != None).all()
-        foundation_hex_codes = []
-        for foundation in foundations:
-            foundation_hex_codes.append(foundation.foundation_hex_code)
+            foundations = Foundation.query.filter(Foundation.foundation_hex_code != None).all()
+            foundation_hex_codes = []
+            for foundation in foundations:
+                foundation_hex_codes.append(foundation.foundation_hex_code)
 
-        top_hex_matches = match_foundation_shade(hex_code, foundation_hex_codes)
+            top_hex_matches = match_foundation_shade(hex_code, foundation_hex_codes)
 
-        fav.closest_matches = Foundation.query.filter(Foundation.foundation_hex_code.in_(top_hex_matches)).all()
+            fav.closest_matches = Foundation.query.filter(Foundation.foundation_hex_code.in_(top_hex_matches)).all()
 
-    favorite_skus = []
+        favorite_skus = []
 
-    for fav in user.favorites:
-        favorite_skus.append(fav.sku_id)
+        for fav in user.favorites:
+            favorite_skus.append(fav.sku_id)
 
-    return render_template("display_favorites.html", favorites=user.favorites, favorite_skus=favorite_skus)
+        return render_template("display_favorites.html", favorites=user.favorites, favorite_skus=favorite_skus)
+
+    else:
+        return redirect("/login")
+
 
 @app.route("/brand/<product_id>")
 def display_brand(product_id):
@@ -278,8 +312,6 @@ def display_brand(product_id):
 def log_out():
     session.pop("user_id")
     return redirect("/login")
-
-
 
 
 if __name__ == "__main__":

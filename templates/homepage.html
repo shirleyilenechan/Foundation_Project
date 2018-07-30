@@ -1,13 +1,24 @@
 {% extends"base.html"%}
 
+{% block head %}
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand"href="#">
+    <img src="/docs/4.1/assets/brand/bootstrap-solid.svg"width="30"height="30"alt="">
+     <a href="/logout"> <input type="button"value="Logout"/> </a>
+</nav>
+
+{% endblock %}
+
 
 {% block content %}
 
-    <a href='/submit_image'> I'd like to Submit an Image for Matching </a>
+<h2> Hi {{user.fname}} Welcome! </h2>
+
+    <a href='/submit_image'id="submit_image"> I'd like to Submit an Image for Matching </a>
   </br>
-     <a href="/select_image">I'd like to Select an Image to View Matches</a>
+     <a href="/select_image"id="view_matches">I'd like to Select an Image to View Matches</a>
     </br>
-    <a href="/view_favorites"> View My Favorites </a>
+    <a href="/view_favorites"id="view_favorites"> View My Favorites </a>
   </br>
                         
 {% endblock %}
