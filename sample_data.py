@@ -3,13 +3,13 @@ import datetime
 
 
 def example_data():
-    User.query.delete()
     UserImage.query.delete()
     Favorite.query.delete()
     Review.query.delete()
     Brand.query.delete()
     Foundation.query.delete()
     Recommendation.query.delete()
+    User.query.delete()
 
     new_user = User(fname="Bobby", lname="Bob", email="bobbybob@gmail.com",
                     create_date=datetime.datetime.utcnow(), birthday="1991-01-12 00:00:00")
@@ -38,7 +38,14 @@ def example_data():
     new_brand_3 = Brand(product_id="P432234", brand_name="Lawless", display_name="Woke Up Like This Flawless Finish Foundation",
                         target_url="www.sephora.com/product/woke-up-like-this-flawless-finish-foundation-P432234",
                         rating=3.9836)
-    db.sesion.add(new_brand_3)
+    db.session.add(new_brand_3)
+    db.session.commit()
+
+    new_brand_4 = Brand(product_id="P427301", brand_name="NARS", display_name="Natural Radiant Longwear Foundation",
+                        target_url="www.sephora.com/product/natural-radiant-longwear-foundation-P427301",
+                        rating=3.6461)
+
+    db.session.add(new_brand_4)
     db.session.commit()
 
     new_foundation = Foundation(sku_id=1925148, product_id="P87985432", foundation_hex_code="#F6D4C4",
@@ -122,3 +129,7 @@ def example_data():
     new_favorite = Favorite(sku_id=1925148, user_id=1)
     db.session.add(new_favorite)
     db.session.commit()
+
+
+if __name__ == "__main__":
+  example_data()

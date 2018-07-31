@@ -283,7 +283,7 @@ class TestTwitterCarouselNoHandle(unittest.TestCase):
 
         def _mock_load_tweets_no_twitter(brand):
             return []
-        get_twitter_posts.load_tweets = _mock_load_tweets_no_twitter
+        load_tweets = _mock_load_tweets_no_twitter
 
     def tearDown(self):
         db.session.close()
@@ -294,30 +294,59 @@ class TestTwitterCarouselNoHandle(unittest.TestCase):
         self.assertIn(b"No Brand Images", result.data)
 
 
-# class TestTwitterCarouselNoPosts(unittest.TestCase):
-#     def setUp(self):
-#         self.client = app.test_client()
-#         app.config["TESTING"] = True
-#         app.config["SECRET_KEY"] = "ABC"
-#         connect_to_db(app, "postgresql:///testdb")
-#         db.create_all()
-#         example_data()
+class TestTwitterCarouselNoPosts(unittest.TestCase):
+    def setUp(self):
+        self.client = app.test_client()
+        app.config["TESTING"] = True
+        app.config["SECRET_KEY"] = "ABC"
+        connect_to_db(app, "postgresql:///testdb")
+        db.create_all()
+        example_data()
 
-#         with self.client as c:
-#             with c.session_transaction() as sess:
-#                 sess["user_id"] = 1
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess["user_id"] = 1
 
-#         def _mock_load_tweets_no_posts(brand):
-#             return []
-#         get_twitter_posts.load_tweets = _mock_load_tweets_no_posts
+        def _mock_load_tweets_no_posts(brand):
+            return []
+        load_tweets = _mock_load_tweets_no_posts
 
-#     def tearDown(self):
-#         db.session.close()
-#         db.drop_all()
+    def tearDown(self):
+        db.session.close()
+        db.drop_all()
 
-#     def test_no_carousel(self):
-#         result = self.client.get("brand/P432234")
-#         self.asserIn(b"No Brand Images", result.data)
+    def test_no_carousel(self):
+        result = self.client.get("/brand/P432234")
+        self.assertIn(b"No Brand Images", result.data)
+
+
+class TestTwitterCarouseNoMedia(unittest.TestCase):
+    def setUp(self):
+        self.client = app.test_client()
+        app.config["TESTING"] = True
+        app.config["SECRET_KEY"] = "ABC"
+        connect_to_db(app, "postgresql:///testdb")
+        db.create_all()
+        example_data()
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess["user_id"] = 1
+
+        def _mock_load_tweets_no_media(brand):
+            return []
+        load_tweets = _mock_load_tweets_no_media
+
+    def tearDown(self):
+        db.session.close()
+        db.drop_all()
+
+
+    def test_no_Ccarousel(self):
+        result = self.client.get("/brand/P427301")
+        self.assertIn(b"No Brand Images", result.data)
+
+
 
 if __name__ == "__main__":
     unittest.main()

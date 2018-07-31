@@ -13,7 +13,7 @@
 
 {% block content %}
 
-<form action ="/submit_image"method="post"enctype="multipart/form-data">
+<form action ="/submit_image"id="imageuploadform"method="post"enctype="multipart/form-data">
  <div>
    <label for="userimage">Choose Image File to Upload</label>
    <input type="file"id="userimage"name="userimage"accept=".jpg, .jpeg, .png">
@@ -23,6 +23,7 @@
  </div>
 </form>
 
-<script src="/static/checkfilesize.js"></script>
+<script src="/static/checkfilesize.js"> </script>
+<script src="/static/uploadfile.js"> </script> 
 
 {% endblock %}

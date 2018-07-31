@@ -21,6 +21,7 @@ def load_tweets(brand):
         if foundation_brand == brand:
 
             if not twitter_handle:
+                twitter_file.close()
                 return []
             else:
                 results = []
@@ -44,8 +45,10 @@ def load_tweets(brand):
                     if len(tweets_lst) > 1:
                         max_id = tweets_lst[-1]["id"]
                     else:
+                        twitter_file.close()
                         return results
 
                     count = count + 1
-
+                twitter_file.close()
                 return results
+    twitter_file.close()

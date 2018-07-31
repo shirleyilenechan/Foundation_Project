@@ -13,9 +13,20 @@
 
 {% block content %}
 
-{% for image in user_images %}
-<a href="/display_matches/{{image.image_id}}"> <img width="200"name="user_image"type ="button"height="200"src="{{image.image_location[36:]}}">
-</a>
-{% endfor %}
+
+<div class="album py-5 bg-light">
+        <div class="container">
+
+          <div class="row">
+            {% for image in user_images %}
+            <div class="col-md-2">
+              <div class="card mb-4 box-shadow">
+                <a href="/display_matches/{{image.image_id}}"> <img width="200"name="user_image"type ="button"height="200"src="{{image.image_location[36:]}}"> </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+</div>
 
 {% endblock %}

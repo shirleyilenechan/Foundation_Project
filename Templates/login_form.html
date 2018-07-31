@@ -1,7 +1,12 @@
 {% extends'base.html'%}
 
 {% block content %}
-<form action="/login"method="Post">
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 mx-auto">
+      <form action="/login"method="Post">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email"class="form-control"id="user_email"name="user_email"aria-describedby="emailHelp"placeholder="Enter email">
@@ -14,8 +19,9 @@
   <button type="submit"class="btn btn-primary">Submit</button>
 </form>
 
-
-
 <a href='/registration'>I Would Like to Register</a>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

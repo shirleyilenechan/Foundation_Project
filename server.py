@@ -76,7 +76,6 @@ def add_user_to_db():
 @app.route('/login', methods=["GET"])
 def display_login_form():
     """Render Login Form"""
-    flash("WELCOME!")
     return render_template("login_form.html")
 
 
@@ -123,6 +122,7 @@ def upload_file():
 
     # get the user's image and saves it to an upload folder
     f = request.files['userimage']
+
     filename = secure_filename(f.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     f.save(file_path)
@@ -132,8 +132,7 @@ def upload_file():
 
     # if there are no faces detected in our image, flash error and have the user resumbit an image
     if cropped_face is None:
-        flash("No Faces Detected, Please Submit a Different Image")
-        return redirect("/submit_image")
+        return "No Image Found"
 
     else:
         #use the get_hex function to get a hex code for the cropped face image
@@ -172,7 +171,7 @@ def upload_file():
             db.session.add(recommendation)
     db.session.commit()
 
-    return redirect("/select_image")
+    return "Processed Image"
 
 
 @app.route("/select_image")
