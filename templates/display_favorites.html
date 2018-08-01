@@ -2,22 +2,22 @@
 
 
 {% block head %}
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand"href="#">
-    <img src="http://cdn.shopify.com/s/files/1/1533/1801/products/Foundation_Swatch_Main_grande.jpg?v=1523386872"width="30"height="30"alt="">
-    <a href="/home">Home</a> <a href='/submit_image'>Submit an Image for Matching</a> <a href="/select_image">Select an Image to View My Matches</a> <a href="/logout"> <a href="/logout"> <input type="button"value="Logout"/> </a>
+<nav class="navbar navbar-dark"style="background-color:black">
+    <img src="https://lacedinleather.files.wordpress.com/2012/05/hfow_medium_2_beige_swatch.jpg"width="30"height="30"alt="">
+    <a class="nav-item nav-link"href="/home"style="color:white">Home</a> <a class="nav-item nav-link"href='/submit_image'style="color:white">Submit an Image for Matching</a>  <a class="nav-item nav-link"href='/select_image'style="color:white">Select an Image to View My Matches</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
+     
 </nav>
 
 {% endblock %}
 
 {% block content %}
 <div class="album py-5 bg-light">
-        <div class="container">
+        <div class="container"style="overflow:hidden">
 
           <div class="row">
             {% for favorite in favorites %}
             <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
+              <div class="card mb-4"style="border:3px solid black;">
                 <a href="/brand/{{favorite.foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{favorite.foundation.hero_image_url}}">
                 </a>
                 

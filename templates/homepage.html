@@ -1,9 +1,9 @@
 {% extends"base.html"%}
 
 {% block head %}
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-dark"style="background-color:black">
   <a class="navbar-brand"href="#">
-    <img src="/docs/4.1/assets/brand/bootstrap-solid.svg"width="30"height="30"alt="">
+    <img src="https://lacedinleather.files.wordpress.com/2012/05/hfow_medium_2_beige_swatch.jpg"width="30"height="30"alt="">
      <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
@@ -12,14 +12,18 @@
 
 {% block content %}
 
-<h2> Hi {{user.fname}} Welcome! </h2>
+<div class="container-fluid">
 
-    <a href='/submit_image'id="submit_image"> I'd like to Submit an Image for Matching </a>
-  </br>
-     <a href="/select_image"id="view_matches">I'd like to Select an Image to View Matches</a>
-    </br>
-    <a href="/view_favorites"id="view_favorites"> View My Favorites </a>
-  </br>
+<h2 style="margin-top:10%; text-align:center; font-size: 6rem;">Hi {{user.fname}} Welcome!</h2>
+
+<a href='/submit_image'> <button type="button"class="btn btn-primary btn-lg btn-block"href='/submit_image'>I'd Like to Submit an Image For Matching</button>
+</a> 
+<a href="/select_image"> <button type="button"class="btn btn-secondary btn-lg btn-block">I'd like to Select an Image to View Matches</button>
+</a> 
+<a href="/view_favorites"> <button type="button"class="btn btn-primary btn-lg btn-block"href='/submit_image'>View My Favorites</button>
+</a> 
+
+</div>
                         
 {% endblock %}
             

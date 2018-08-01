@@ -1,6 +1,9 @@
 {% extends'base.html'%}
 
 {% block content %}
+
+<div class="container"style="height:100%; margin-top:15%">
+
 <form action ='/registration', method="post">
 
   <div class="form-row">
@@ -18,11 +21,13 @@
     <div class="form-group col-md-6">
     <label for="email">Email</label>
     <input type="text"class="form-control"name="email"id="email"placeholder="Email">
+    </div>  
+    <div class="form-group col-md-6">
+      <label for="password">Password</label>
+      <input type="text"class="form-control"name="password"id="password"placeholder="Password">
+    </div>
   </div>
-  <div class="form-group col-md-6">
-    <label for="password">Password</label>
-    <input type="text"class="form-control"name="password"id="password"placeholder="Password">
-  </div>
+
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="birthday_month">Month</label>
@@ -32,6 +37,7 @@
         {% endfor %}
       </select>
     </div>
+    
     <div class="form-group col-md-4">
       <label for="birthday_day">Day</label>
       <select name="birthday_day"id="birthday_day"class="form-control">
@@ -40,15 +46,21 @@
         {% endfor %}
       </select>
     </div>
+    
     <div class="form-group col-md-4">
       <label for="birthday_year">Year</label>
       <select name="birthday_year"class="form-control"id="birthday_year">
         {% for year in years %}
         <option value={{ year}}> {{year}} </option> 
         {% endfor %}
+      </select>
     </div>
   </div>
-  <input type="submit"class="btn btn-primary"value ="Sign In">
+  <br>
+  <input type="submit"class="btn btn-primary"value="Register"style="
+    margin-left:45%;">
 
 </form>
+
+</div>
 {% endblock %}
