@@ -19,7 +19,9 @@ def crop_face(upload_folder, filename):
 
     # if there is no face in the image, return none
     # else, use PIL library to crop your image according to the 4 pixels specified in face_lcoations
-    if len(face_locations) == 0:
+    if len(face_locations) > 1:
+        return None
+    elif len(face_locations) == 0:
         return None
     else:
         left = face_locations[0][3]

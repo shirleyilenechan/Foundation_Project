@@ -2,35 +2,43 @@
 
 {% block content %}
 
-<div class="container"style="height:100%; margin-top:15%">
+<style> 
+body {background-color: black;}
+</style>
+
+
+<h2 style="margin-top:10%; text-align:center; font-size: 6rem; color:white"> Match Yo' Face</h2>
+<br>
+
+<div class="container"style="height:100%">
 
 <form action ='/registration', method="post">
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <label for="first_name">First Name</label>
+      <label for="first_name"style="color:white">First Name</label>
       <input type="text"class="form-control"name="first_name"id="first_name"placeholder="First Name">
     </div>
     <div class="form-group col-md-6">
-      <label for="last_name">Last Name</label>
+      <label for="last_name"style="color:white">Last Name</label>
       <input type="text"class="form-control"name="last_name"id="last_name"placeholder="Last Name">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-6">
-    <label for="email">Email</label>
+    <label for="email"style="color:white">Email</label>
     <input type="text"class="form-control"name="email"id="email"placeholder="Email">
     </div>  
     <div class="form-group col-md-6">
-      <label for="password">Password</label>
+      <label for="password"style="color:white">Password</label>
       <input type="text"class="form-control"name="password"id="password"placeholder="Password">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="birthday_month">Month</label>
+      <label for="birthday_month"style="color:white">Month</label>
       <select name="birthday_month"id="birthday_month"class="form-control">
         {% for month in months %}
         <option value={{ month}}> {{month}} </option>
@@ -39,7 +47,7 @@
     </div>
     
     <div class="form-group col-md-4">
-      <label for="birthday_day">Day</label>
+      <label for="birthday_day"style="color:white">Day</label>
       <select name="birthday_day"id="birthday_day"class="form-control">
         {% for day in days %}
         <option value={{ day}}>{{day}} </option>
@@ -48,7 +56,7 @@
     </div>
     
     <div class="form-group col-md-4">
-      <label for="birthday_year">Year</label>
+      <label for="birthday_year"style="color:white">Year</label>
       <select name="birthday_year"class="form-control"id="birthday_year">
         {% for year in years %}
         <option value={{ year}}> {{year}} </option> 

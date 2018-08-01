@@ -1,7 +1,7 @@
 function alertImage(result){
     console.log(result);
     if (result.target.responseText === "No Image Found") {
-        alert("No Faces Were Detected in the Image");    
+        alert("Not a Valid Image");    
     }
     else {
         window.location.href="/select_image"

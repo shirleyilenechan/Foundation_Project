@@ -4,11 +4,13 @@
 
 {% block head %}
 <nav class="navbar navbar-dark"style="background-color:black">
-    <img src="https://lacedinleather.files.wordpress.com/2012/05/hfow_medium_2_beige_swatch.jpg"width="30"height="30"alt="">
+    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30"alt="">
   <a href="/home"style="color:white">Home</a>  <a href='/submit_image'style="color:white">Submit an Image for Matching</a> <a href="/view_favorites"style="color:white">View My Favorites</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
 <style> 
+
+img {object-fit: cover;}
 
 #myphotos {
   width:100%;
@@ -30,7 +32,7 @@
 
 {% block content %}
 
-<h2 style="text-align:center;font-size:5em; margin-top:6%"> Please Select An Image to View Matches </h2>
+<h2 style="text-align:center;font-size:5em; margin-top:6%"> Please Select an Image to View Matches </h2>
 <div class="container-fluid">
 <div id="myphotos"> 
 {% for image in user_images %}

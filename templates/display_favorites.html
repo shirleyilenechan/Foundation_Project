@@ -3,7 +3,7 @@
 
 {% block head %}
 <nav class="navbar navbar-dark"style="background-color:black">
-    <img src="https://lacedinleather.files.wordpress.com/2012/05/hfow_medium_2_beige_swatch.jpg"width="30"height="30"alt="">
+    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30"alt="">
     <a class="nav-item nav-link"href="/home"style="color:white">Home</a> <a class="nav-item nav-link"href='/submit_image'style="color:white">Submit an Image for Matching</a>  <a class="nav-item nav-link"href='/select_image'style="color:white">Select an Image to View My Matches</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
      
 </nav>
@@ -12,12 +12,12 @@
 
 {% block content %}
 <div class="album py-5 bg-light">
-        <div class="container"style="overflow:hidden">
+        <div class="container">
 
           <div class="row">
             {% for favorite in favorites %}
             <div class="col-md-4">
-              <div class="card mb-4"style="border:3px solid black;">
+              <div class="card mb-4"style="border:3px solid black;height:525px; width:350px">
                 <a href="/brand/{{favorite.foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{favorite.foundation.hero_image_url}}">
                 </a>
                 
@@ -34,7 +34,9 @@
                           src="http://www.clker.com/cliparts/3/2/2/u/b/b/white-heart-with-black-outline-md.png"
                           {% endif %} > 
                   </p>
+                  <div style="height:4em">
                   <p class="card-text">{{favorite.foundation.brand.display_name}}</p>
+                  </div>
                   <p class="card-text"> Avg Customer Rating: {{favorite.foundation.brand.rating}} </p> 
                   <div> Shade Sample : <img id="shade_url"src="https://{{favorite.foundation.shade_image_url}}"> </div>
                   <br>

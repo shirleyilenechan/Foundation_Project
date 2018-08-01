@@ -1,24 +1,33 @@
 {% extends'base.html'%}
 
-{% block content %}
 
-<div class="container"style="height:100%">
+{% block content %}
+<style> 
+body {background-color: black;}
+</style>
+
+
+
+<h2 style="margin-top:10%; text-align:center; font-size: 6rem; color:white"> Throwing Shade</h2>
+<h2 style="text-align:center; font-size: 4rem; color:white"> A Foundation Matching Application </h2>
+<br>
+<div class="container">
   <div class="row"style="height:100%">
-    <div class="col-md-4 mx-auto"style="margin-top:20%">
+    <div class="col-md-4 mx-auto">
       <form action="/login"method="Post">
   <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
+    <label for="exampleInputEmail1"style="color:white">Email address</label>
     <input type="email"class="form-control"id="user_email"name="user_email"aria-describedby="emailHelp"placeholder="Enter email">
     <small id="emailHelp"class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
+    <label for="exampleInputPassword1"style="color:white">Password</label>
     <input type="password"class="form-control"id="user_email"name="user_password"placeholder="Password">
   </div>
-  <button type="submit"class="btn btn-primary">Submit</button>
+  <button type="submit"class="btn btn-primary"style="margin-left:40%">Login</button>
 </form>
 
-<a href='/registration'>I Would Like to Register</a>
+<a href='/registration'style="margin-left:25%">I Would Like to Register</a>
     </div>
   </div>
 </div>

@@ -69,7 +69,6 @@ def add_user_to_db():
         return redirect("/login")
 
     else:
-        flash("You have Already Registered, Please Login")
         return redirect("/login")
 
 

@@ -2,8 +2,13 @@
 
 
 {% block head %}
+
+<style> 
+img {object-fit: cover;}
+</style>
+
 <nav class="navbar navbar-dark"style="background-color:black">
-    <img src="https://lacedinleather.files.wordpress.com/2012/05/hfow_medium_2_beige_swatch.jpg"width="30"height="30"alt="">
+    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30"alt="">
   <a href="/home"style="color:white">Home</a>  <a href='/submit_image'style="color:white">Submit an Image for Matching</a> <a href="/select_image"style="color:white">Select an Image to View My Matches</a> <a href="/view_favorites"style="color:white">View My Favorites</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
@@ -17,7 +22,7 @@
           <div class="row">
             {% for foundation in foundation_products %}
             <div class="col-md-4">
-              <div class="card mb-4"style="border:3px solid black;">
+              <div class="card mb-4"style="border:3px solid black; height:500px; width:350px">
                 <a href="/brand/{{foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{foundation.hero_image_url}}">
                 </a>
                 
@@ -35,9 +40,11 @@
                           src="http://www.clker.com/cliparts/3/2/2/u/b/b/white-heart-with-black-outline-md.png"
                           {% endif %} > 
                   </p>
+                  <div style="height:4em">
                   <p class="card-text">{{foundation.brand.display_name}}</p>
+                  </div>
                   <p class="card-text"> Avg Customer Rating: {{foundation.brand.rating}} </p> 
-                  <div> Shade Sample : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='80'width='80'src='https://{{foundation.shade_image_url}}'><img height='80'width='80'src='{{image.image_location[36:]}}'></div>" >
+                  <div> Shade Sample : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='100'width='100'src='https://{{foundation.shade_image_url}}'><img height='100'width='100'; object-fit: cover; src='{{image.image_location[36:]}}'></div>" >
                     <img src="https://{{foundation.shade_image_url}}">
                   </a>
                 </div>
