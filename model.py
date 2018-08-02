@@ -180,4 +180,3 @@ def connect_to_db(app, db_uri='postgres:///foundation_project'):
 if __name__ == "__main__":
     from server import app
     init_app()
-    connect_to_db(app)

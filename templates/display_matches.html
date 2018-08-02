@@ -35,23 +35,23 @@ img {object-fit: cover;}
                           height="20" 
                           width="20"
                           {% if foundation.sku_id in favorite_skus %}
-                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png"
+                          src= "https://hf-sh.org/sacredheart/wp-content/uploads/sites/3/2017/12/heart-red.png"
                           {% else %}
-                          src="http://www.clker.com/cliparts/3/2/2/u/b/b/white-heart-with-black-outline-md.png"
+                          src="http://iconshow.me/media/images/ui/iOS7-optimized-icon/png/256/39.heart.png"
                           {% endif %} > 
                   </p>
                   <div style="height:4em">
                   <p class="card-text">{{foundation.brand.display_name}}</p>
                   </div>
                   <p class="card-text"> Avg Customer Rating: {{foundation.brand.rating}} </p> 
-                  <div> Shade Sample : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='100'width='100'src='https://{{foundation.shade_image_url}}'><img height='100'width='100'; object-fit: cover; src='{{image.image_location[36:]}}'></div>" >
-                    <img src="https://{{foundation.shade_image_url}}">
+                  <div> Shade Sample : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='100'width='100'src='{{foundation.shade_image_url}}'><img height='100'width='100'; object-fit: cover; src='{{image.image_location[36:]}}'></div>" >
+                    <img src="{{foundation.shade_image_url}}">
                   </a>
                 </div>
                   <br>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a href="https://{{foundation.foundation_target_url}}">
+                      <a href="{{foundation.foundation_target_url}}">
                         <input type="button"value="View This Product"/>
                         </a>
                     </div>

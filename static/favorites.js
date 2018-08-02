@@ -8,10 +8,10 @@ function submitFavorites(evt){
             formInputs, 
             function (result) {
                 if (result.status === "ok") {
-                    $(evt.target).attr("src", "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png");
+                    $(evt.target).attr("src", "https://hf-sh.org/sacredheart/wp-content/uploads/sites/3/2017/12/heart-red.png");
                 }
                 else if (result.status === "deleted") {
-                    $(evt.target).attr("src", "http://www.clker.com/cliparts/3/2/2/u/b/b/white-heart-with-black-outline-md.png"); 
+                    $(evt.target).attr("src", "http://iconshow.me/media/images/ui/iOS7-optimized-icon/png/256/39.heart.png"); 
                 }
             });
 

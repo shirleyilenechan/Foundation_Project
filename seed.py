@@ -3,7 +3,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
-from model import User, Brand, Foundation, UserImage, Recommendation, connect_to_db, db
+from model import Brand, Foundation, connect_to_db, db
 from server import app
 from datetime import datetime
 import requests

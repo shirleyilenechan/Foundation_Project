@@ -10,7 +10,7 @@ import datetime
 from PIL import Image
 import requests
 import json
-from generate_hex import get_hex, match_foundation_shade
+from generate_hex import get_hex, match_foundation_shade, get_top_foundations
 from cropped_image import crop_face
 from get_twitter_posts import load_tweets
 
@@ -85,6 +85,7 @@ def display_login_form():
 def user_login():
     """ checks user login info against the info saved in db """
 
+
     email_address = request.form.get("user_email")
     password = request.form.get("user_password")
 
@@ -147,22 +148,7 @@ def upload_file():
     else:
         #use the get_hex function to get a hex code for the cropped face image
         face_hex_code = get_hex(20, cropped_face)
-
-        foundations = Foundation.query.filter(Foundation.foundation_hex_code != None).all()
-        foundation_hex_codes = []
-        for foundation in foundations:
-            foundation_hex_codes.append(foundation.foundation_hex_code)
-
-        foundation_hex_codes = list(set(foundation_hex_codes))
-
-        # get the top 6 hex codes of the foundations that match the face
-        top_hex_matches = match_foundation_shade(face_hex_code, foundation_hex_codes)
-        foundation_matches = []
-
-        # query the database for foundations which match the top 6 hex codes
-        for foundation_hex in top_hex_matches:
-            foundation = Foundation.query.filter(Foundation.foundation_hex_code == foundation_hex).all()
-            foundation_matches.append(foundation)
+        foundation_matches = get_top_foundations(face_hex_code)
 
     user = User.query.get(session["user_id"])
     time_submitted = datetime.datetime.utcnow()

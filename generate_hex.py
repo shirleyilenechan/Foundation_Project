@@ -10,6 +10,7 @@ from io import BytesIO
 from colormap import rgb2hex, hex2rgb
 from easydev.tools import check_param_in_list, swapdict, check_range
 from skimage.color import rgb2lab, deltaE_cie76
+from model import Foundation
 
 
 def get_hex_url(num_clusters, img_url):
@@ -97,3 +98,26 @@ def match_foundation_shade(face_hex, foundation_hex_lst):
         top_6_hex.append(foundation_hex_lst[index])
 
     return top_6_hex
+
+def get_top_foundations(face_hex_code):
+    """return a list of the top foundation matches"""
+
+    foundations = Foundation.query.filter(Foundation.foundation_hex_code != None).all()
+
+    # get a list of foundation hex codes to compare the face hex code to
+    foundation_hex_codes = []
+    for foundation in foundations:
+        foundation_hex_codes.append(foundation.foundation_hex_code)
+
+    foundation_hex_codes = list(set(foundation_hex_codes))
+
+    # get the top 6 hex codes of the foundations that match the face
+    top_hex_matches = match_foundation_shade(face_hex_code, foundation_hex_codes)
+    foundation_matches = []
+
+    # query the database for foundations which match the top 6 hex codes
+    for foundation_hex in top_hex_matches:
+        foundation = Foundation.query.filter(Foundation.foundation_hex_code == foundation_hex).all()
+        foundation_matches.append(foundation)
+
+    return foundation_matches
