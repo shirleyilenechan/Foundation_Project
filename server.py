@@ -198,7 +198,7 @@ def display_matches(image_id):
         # pass the user image so that we can use the image for the popover later
         image = UserImage.query.filter(UserImage.image_id == image_id).first()
 
-        # pass a list of fondation recommendations
+        # pass a list of foundation recommendations
         foundation_products = []
 
         for recommendation in recommendations:
@@ -280,16 +280,11 @@ def display_favorites():
 
             hex_code = fav.foundation.foundation_hex_code
 
-            foundations = Foundation.query.filter(Foundation.foundation_hex_code != None).all()
-            foundation_hex_codes = []
-            for foundation in foundations:
-                foundation_hex_codes.append(foundation.foundation_hex_code)
-
             # get the top 6 suggestions that most closely match each user favorite
-            top_hex_matches = match_foundation_shade(hex_code, foundation_hex_codes)
+            top_foundation_matches = get_top_foundations(hex_code)
 
             # add closest matches attribute to each of the user's favorite foundations
-            fav.closest_matches = Foundation.query.filter(Foundation.foundation_hex_code.in_(top_hex_matches)).all()
+            fav.closest_matches = top_foundation_matches
 
         favorite_skus = []
 

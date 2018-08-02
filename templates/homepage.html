@@ -2,7 +2,6 @@
 
 {% block head %}
 <nav class="navbar navbar-dark"style="background-color:black">
-  <a class="navbar-brand"href="#">
     <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30">
      <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
@@ -14,7 +13,7 @@
 
 <div class="container-fluid">
 
-<h2 style="margin-top:10%; text-align:center; font-size: 6rem;">Hi {{user.fname.capitalize()}} Welcome!</h2>
+<h2 style="margin-top:10%; text-align:center; font-size: 6rem;">Hi {{user.fname.capitalize()}}, Welcome!</h2>
 
 <a href='/submit_image'> <button type="button"class="btn btn-primary btn-lg btn-block"style="background-color:black">I'd Like to Submit an Image For Matching</button>
 </a> 

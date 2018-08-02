@@ -99,7 +99,7 @@ def match_foundation_shade(face_hex, foundation_hex_lst):
 
     return top_6_hex
 
-def get_top_foundations(face_hex_code):
+def get_top_foundations(hex_code):
     """return a list of the top foundation matches"""
 
     foundations = Foundation.query.filter(Foundation.foundation_hex_code != None).all()
@@ -112,7 +112,8 @@ def get_top_foundations(face_hex_code):
     foundation_hex_codes = list(set(foundation_hex_codes))
 
     # get the top 6 hex codes of the foundations that match the face
-    top_hex_matches = match_foundation_shade(face_hex_code, foundation_hex_codes)
+    top_hex_matches = match_foundation_shade(hex_code, foundation_hex_codes)
+
     foundation_matches = []
 
     # query the database for foundations which match the top 6 hex codes
