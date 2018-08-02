@@ -8,7 +8,7 @@ from server import app
 from datetime import datetime
 import requests
 import json
-from generate_hex import get_hex
+from generate_hex import get_hex_url
 
 
 def load_brand():
@@ -74,7 +74,7 @@ def load_foundation():
 
             # create foundation object
             foundation = Foundation(sku_id=sku_id, product_id=product_id, foundation_target_url=foundation_target_url,
-                                shade_image_url= shade_image_url, hero_image_url=hero_image_url)
+                                    shade_image_url=shade_image_url, hero_image_url=hero_image_url)
 
             # add and commit foundation object to db
             db.session.add(foundation)
@@ -83,6 +83,7 @@ def load_foundation():
 
 
 def get_hex_code():
+    """ add hex codes for each foundation to db """
     # get all foundation objects
     foundations = Foundation.query.all()
 
@@ -92,7 +93,6 @@ def get_hex_code():
         try:
             foundation.foundation_hex_code = get_hex_url(3, foundation.shade_image_url)
         except OSError:
-            print(foundation)
             continue
 
     db.session.commit()

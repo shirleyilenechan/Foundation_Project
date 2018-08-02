@@ -13,12 +13,16 @@ from skimage.color import rgb2lab, deltaE_cie76
 
 
 def get_hex_url(num_clusters, img_url):
+    """return the dominant hex code for an image--from url"""
+
     response = requests.get(img_url)
     img = Image.open(BytesIO(response.content))
     get_hex(num_clusters, img)
 
 
 def get_hex(num_clusters, img):
+    """return the dominant hex code for an image"""
+
     # https://stackoverflow.com/questions/3241929/python-find-dominant-most-common-color-in-an-image/3242290
     np.random.seed(42)
     # turn image into numpy array
@@ -48,6 +52,8 @@ def get_hex(num_clusters, img):
 
 
 def match_foundation_shade(face_hex, foundation_hex_lst):
+    """return the 6 closest distance hex codes"""
+
     # https://stackoverflow.com/questions/44428315/similar-color-detection-in-python
 
     # turn face_hex into rgb

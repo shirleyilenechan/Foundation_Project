@@ -48,8 +48,10 @@ def add_user_to_db():
     email = request.form.get("email")
     password = request.form.get("password")
 
+    # check to see if this user already exists in our db
     check_existing_user = User.query.filter(User.email == email).first()
 
+    # if user does not exist, then add user to db
     if check_existing_user is None:
         birth_month = request.form.get("birthday_month")
         birth_day = request.form.get("birthday_day")
@@ -75,18 +77,25 @@ def add_user_to_db():
 @app.route('/login', methods=["GET"])
 def display_login_form():
     """Render Login Form"""
+
     return render_template("login_form.html")
 
 
 @app.route("/login", methods=["POST"])
 def user_login():
+    """ checks user login info against the info saved in db """
+
     email_address = request.form.get("user_email")
     password = request.form.get("user_password")
+
+    #check to see if this user exists in our db
     client = User.query.filter(User.email == email_address).first()
 
+    # if user does not exist, have user register
     if client is None:
         flash("No User Found, Please Register")
         return redirect("/registration")
+    # if user exists, then check the password
     else:
         if client.check_password(password):
             session["user_id"] = client.user_id
@@ -98,6 +107,8 @@ def user_login():
 
 @app.route("/home")
 def show_homepage():
+    """ renders the hompage """
+
     if "user_id" in session:
         user = User.query.get(session["user_id"])
         return render_template("homepage.html", user=user)
@@ -129,7 +140,7 @@ def upload_file():
     # crop the image to the user's face using the crop_face function
     cropped_face = crop_face(app.config['UPLOAD_FOLDER'], filename)
 
-    # if there are no faces detected in our image, flash error and have the user resumbit an image
+    # if there are no/too many faces detected in our image, flash error and have the user resumbit an image
     if cropped_face is None:
         return "No Image Found"
 
@@ -177,6 +188,7 @@ def upload_file():
 def display_user_image():
     """display user images as a link which allows them to select which image they would like to see matches for"""
 
+    # query the db to get the user's images to render the template
     if "user_id" in session:
         user = User.query.get(session["user_id"])
         user_images = user.userimages
@@ -188,15 +200,19 @@ def display_user_image():
 
 @app.route("/display_matches/<image_id>")
 def display_matches(image_id):
+    """ display the user's matches for the image user has selected to see matches for """
 
     if "user_id" in session:
 
         user = User.query.get(session["user_id"])
 
+        # query the db to find recommendations for that image)
         recommendations = Recommendation.query.filter(Recommendation.user_id == user.user_id, Recommendation.image_id == image_id).all()
 
+        # pass the user image so that we can use the image for the popover later
         image = UserImage.query.filter(UserImage.image_id == image_id).first()
 
+        # pass a list of fondation recommendations
         foundation_products = []
 
         for recommendation in recommendations:
@@ -204,6 +220,7 @@ def display_matches(image_id):
             foundation = Foundation.query.filter(Foundation.sku_id == sku).first()
             foundation_products.append(foundation)
 
+        # pass a list of favorites so that we can display a red heart for favorites
         favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
 
         favorite_skus = set(sku[0] for sku in favorite_skus)
@@ -226,11 +243,15 @@ def add_favorite_db():
 
         check_favorite = Favorite.query.filter(Favorite.user_id == user.user_id, Favorite.sku_id == sku_id).first()
 
+        # check to see if the sku that the user click heart on is already in favorites
+        # if the sku does not exist, add to favorites and turn heart red
         if check_favorite is None:
             user_favorite = Favorite(sku_id=sku_id, user_id=user.user_id)
             db.session.add(user_favorite)
             db.session.commit()
             return jsonify({"status": "ok"})
+        # if the sku already exists in favorites and user clicks heart, then unheart product
+        # and remove the sku from favorites
         else:
             db.session.delete(check_favorite)
             db.session.commit()
@@ -268,6 +289,7 @@ def display_favorites():
     if "user_id" in session:
         user = User.query.get(session["user_id"])
 
+        # query db for user's favorites and get the hex code for each favorite
         for fav in user.favorites:
 
             hex_code = fav.foundation.foundation_hex_code
@@ -277,8 +299,10 @@ def display_favorites():
             for foundation in foundations:
                 foundation_hex_codes.append(foundation.foundation_hex_code)
 
+            # get the top 6 suggestions that most closely match each user favorite
             top_hex_matches = match_foundation_shade(hex_code, foundation_hex_codes)
 
+            # add closest matches attribute to each of the user's favorite foundations
             fav.closest_matches = Foundation.query.filter(Foundation.foundation_hex_code.in_(top_hex_matches)).all()
 
         favorite_skus = []
@@ -294,6 +318,7 @@ def display_favorites():
 
 @app.route("/brand/<product_id>")
 def display_brand(product_id):
+    """display brand information, including reviews and twitter carousel"""
 
     foundation_brand = Brand.query.filter(Brand.product_id == product_id).first()
 
@@ -301,6 +326,8 @@ def display_brand(product_id):
 
     foundation_name = foundation_brand.brand_name
 
+    # call the function that returns twitter media, and pass the tweet information
+    # for the twitter carousel
     tweets_lst = load_tweets(foundation_name)
 
     return render_template("display_brand.html", foundation_brand=foundation_brand, reviews=reviews, tweets=tweets_lst)
