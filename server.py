@@ -143,6 +143,7 @@ def upload_file():
 
     # if there are no/too many faces detected in our image, flash error and have the user resumbit an image
     if cropped_face is None:
+        os.remove(file_path)
         return "No Image Found"
 
     else:

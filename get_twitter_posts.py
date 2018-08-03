@@ -4,6 +4,7 @@ import twitter
 import urllib.parse
 
 def find_twitter_handle(brand):
+    """returns the twitter handle for the brand, if one is found, otherwise None"""
     twitter_file = open("twitter_handles.txt")
 
     # get the brand name and twitter handle for each brand
