@@ -211,7 +211,6 @@ def display_matches(image_id):
         favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
 
         favorite_skus = set(sku[0] for sku in favorite_skus)
-        print(image)
 
         return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus, image=image)
 
