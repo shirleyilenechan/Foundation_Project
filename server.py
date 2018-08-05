@@ -18,7 +18,7 @@ ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg"])
 
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "/home/vagrant/src/Foundation_Project/static/uploads"
+app.config['UPLOAD_FOLDER'] = "static/uploads"
 app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
@@ -32,7 +32,7 @@ def home_page():
 def index():
     """Render Registration Form"""
 
-    years = range(1990, 2019)
+    years = range(1910, 2019)
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     days = range(1, 32)
 
@@ -179,7 +179,7 @@ def display_user_image():
     if "user_id" in session:
         user = User.query.get(session["user_id"])
         user_images = user.userimages
-
+        print(user_images)
         return render_template("display_user_images.html", user_images=user_images)
     else:
         return redirect("/login")
@@ -211,6 +211,7 @@ def display_matches(image_id):
         favorite_skus = db.session.query(Favorite.sku_id).filter(Favorite.user_id == user.user_id).all()
 
         favorite_skus = set(sku[0] for sku in favorite_skus)
+        print(image)
 
         return render_template("display_matches.html", foundation_products=foundation_products, favorite_skus=favorite_skus, image=image)
 

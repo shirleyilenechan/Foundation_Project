@@ -22,8 +22,8 @@ img {object-fit: cover;}
           <div class="row">
             {% for foundation in foundation_products %}
             <div class="col-md-4">
-              <div class="card mb-4"style="border:3px solid black; height:500px; width:350px">
-                <a href="/brand/{{foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{foundation.hero_image_url}}">
+              <div class="card mb-4"style="border:3px solid black; height:500px; width:350px"> 
+                <a style="margin-top:14px"href="/brand/{{foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{foundation.hero_image_url}}">
                 </a>
                 
                 
@@ -44,7 +44,7 @@ img {object-fit: cover;}
                   <p class="card-text">{{foundation.brand.display_name}}</p>
                   </div>
                   <p class="card-text"> Avg Customer Rating: {{foundation.brand.rating}} </p> 
-                  <div> Shade Sample : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='100'width='100'src='{{foundation.shade_image_url}}'><img height='100'width='100'; object-fit: cover; src='{{image.image_location[36:]}}'></div>" >
+                  <div> Shade Sample : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='100'width='100'src='{{foundation.shade_image_url}}'><img height='100'width='100'object-fit='cover'src='/{{image.image_location}}'></div>" >
                     <img src="{{foundation.shade_image_url}}">
                   </a>
                 </div>

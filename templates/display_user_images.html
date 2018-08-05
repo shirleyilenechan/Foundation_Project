@@ -36,7 +36,7 @@ img {object-fit: cover;}
 <div class="container-fluid">
 <div id="myphotos"> 
 {% for image in user_images %}
-    <a href="/display_matches/{{image.image_id}}"> <img style="width:400px; height:400px"src="{{image.image_location[36:]}}"> 
+    <a href="/display_matches/{{image.image_id}}"> <img style="width:400px; height:400px"src="{{image.image_location}}"> 
     </a>
 {% endfor %} 
 </div> 

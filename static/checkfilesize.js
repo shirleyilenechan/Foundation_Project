@@ -5,13 +5,18 @@ function checkFileSize(evt) {
 
                 if (oFile.size > 300000) {
                     evt.preventDefault();
-                    alert("File Size Must Under 3kb!");
+                    alert("File Size Must Under 300kb!");
                 }
 
-                if (!oFile.name.match(/.(jpg|jpeg|png)$/i)) {
+                else if (!oFile.name.match(/.(jpg|jpeg|png)$/i)) {
                     evt.preventDefault();
-                    alert('Not a Valid Image File');
+                    alert('Not a Valid Image File Format');
 
+                }
+
+                else {
+                    let elt = document.getElementById("loader-wrapper"); 
+                    elt.setAttribute("class", "backdrop");
                 }
 
 }

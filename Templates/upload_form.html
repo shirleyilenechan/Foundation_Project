@@ -12,18 +12,23 @@
 
 {% block content %}
 
-<h2 style="margin-top:10%; text-align:center; font-size: 6rem;">Upload an Image</h2>
+<h2 id="header"style="margin-top:10%; text-align:center; font-size: 6rem;">Upload an Image</h2>
 
 <br>
 
 <form action ="/submit_image"id="imageuploadform"method="post"enctype="multipart/form-data"style="margin-left:35%">
- <div>
+ <div id>
    <label for="userimage">Choose Image File to Upload</label>
    <input type="file"id="userimage"name="userimage"accept=".jpg, .jpeg, .png">
  </div>
  <div>
    <button id="submitButton"onclick="return checkFileSize(event)">Submit</button>
  </div>
+
+ <div id="loader-wrapper"class="hidden">
+    <div id="loader"></div>
+</div>
+
 </form>
 
 <script src="/static/checkfilesize.js"> </script>

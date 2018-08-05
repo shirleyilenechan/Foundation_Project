@@ -1,10 +1,11 @@
 function alertImage(result){
-    console.log(result);
     if (result.target.responseText === "No Image Found") {
-        alert("Not a Valid Image");    
+        let elt = document.getElementById("loader-wrapper"); 
+        elt.setAttribute("class", "hidden");
+        alert("Not a Valid Image"); 
     }
     else {
-        window.location.href="/select_image"
+        window.location.href="/select_image"; 
     }
 }
 
