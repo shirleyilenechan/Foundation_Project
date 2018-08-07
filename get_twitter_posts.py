@@ -30,7 +30,7 @@ def load_tweets(brand):
 
     twitter_handle = find_twitter_handle(brand)
 
-    if twitter_handle is None:
+    if not twitter_handle:
         return []
     else:
         results = []
