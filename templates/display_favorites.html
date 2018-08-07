@@ -18,43 +18,55 @@
             {% for favorite in favorites %}
             <div class="col-md-4">
               <div class="card mb-4"style="border:3px solid black;height:550px; width:350px">
-                <a style="margin-top:14px"href="/brand/{{favorite.foundation.brand.product_id}}"> <img width="200"name="foundation_hero_image"type ="button"height="200"src="{{favorite.foundation.hero_image_url}}">
-                </a>
+                <img style="margin-top:14px"width="200"name="foundation_hero_image"height="200"src="{{favorite.foundation.hero_image_url}}">
                 
                 <div class="card-body"> 
-                  <p class="card-text"> {{favorite.foundation.brand.brand_name}}   
-                    <img data-sku={{favorite.foundation.sku_id}}
-                          class="heart" 
-                          type="button" 
-                          height="20" 
-                          width="20"
-                          {% if favorite.sku_id in favorite_skus %}
-                          src="https://hf-sh.org/sacredheart/wp-content/uploads/sites/3/2017/12/heart-red.png"
-                          {% else %}
-                          src="http://iconshow.me/media/images/ui/iOS7-optimized-icon/png/256/39.heart.png"
-                          {% endif %} > 
+                  <p class="card-text"> <a style="margin-top:14px"href="/brand/{{favorite.foundation.brand.product_id}}">{{favorite.foundation.brand.brand_name}}</a> 
+      
                   </p>
                   <div style="height:4em">
                   <p class="card-text">{{favorite.foundation.brand.display_name}}</p>
                   </div>
-                  <p class="card-text"> Avg Customer Rating: {{favorite.foundation.brand.rating}} </p> 
+                  <p class="card-text">
+                    Avg Customer Rating:
+                    {% for number in range(favorite.foundation.brand.rating|round(0,"floor")| int) %}
+                    <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% if favorite.foundation.brand.rating|round> favorite.foundation.brand.rating %}
+                    <i class="fas fa-star-half"></i>
+                    {% endif %}
+
+                  </p> 
                   <div> Shade Sample : <img id="shade_url"src="{{favorite.foundation.shade_image_url}}"> </div>
                   <br>
                   <div> You May Also Like:
                         {% for lst in favorite.closest_matches %}
                         {% for match in lst %}
-                        <a href="{{match.foundation_target_url}}" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<div> <img height='80'width='80'src='{{match.hero_image_url}}'>  {{match.brand.brand_name}}</div><br><div>{{match.brand.display_name}}</div><br><div>Shade Sample: <img src='{{match.shade_image_url}}'</div>"> 
+                        {% if match.sku_id != favorite.sku_id %}
+                        <a target="_blank"href="{{match.foundation_target_url}}" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<div> <img height='80'width='80'src='{{match.hero_image_url}}'>  {{match.brand.brand_name}}</div><br><div>{{match.brand.display_name}}</div><br><div>Shade Sample: <img src='{{match.shade_image_url}}'</div>"> 
                           <img class="icon"data-sku="{{match.sku_id}}" src="{{match.hero_image_url}}" height="20" width="20" type="button"> 
                         </a> 
+                        {% endif %}
                         {% endfor %}
                         {% endfor %}
                     </div> 
                   <br>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a href="{{favorite.foundation.foundation_target_url}}">
-                        <input type="button"value="View This Product"/>
+                      <a target="_blank"href="{{favorite.foundation.foundation_target_url}}">
+                        <input type="button"value="View This Product on Sephora"/>
                         </a>
+                          <img data-sku={{favorite.foundation.sku_id}}
+                          class="heart" 
+                          type="button" 
+                          height="30" 
+                          width="30"
+                          style="margin-left:15px"
+                          {% if favorite.sku_id in favorite_skus %}
+                          src="https://hf-sh.org/sacredheart/wp-content/uploads/sites/3/2017/12/heart-red.png"
+                          {% else %}
+                          src="http://iconshow.me/media/images/ui/iOS7-optimized-icon/png/256/39.heart.png"
+                          {% endif %} > 
                     </div>
                   </div>
                 </div>

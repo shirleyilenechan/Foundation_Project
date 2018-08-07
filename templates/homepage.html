@@ -2,7 +2,7 @@
 
 {% block head %}
 <nav class="navbar navbar-dark"style="background-color:black">
-    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30">
+    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30"> 
      <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
@@ -15,6 +15,8 @@
 
 <h2 style="margin-top:10%; text-align:center; font-size: 6rem;">Hi {{user.fname.capitalize()}}, Welcome!</h2>
 
+<br>
+
 <a href='/submit_image'> <button type="button"class="btn btn-primary btn-lg btn-block"style="background-color:black">I'd Like to Submit an Image For Matching</button>
 </a> 
 <a href="/select_image"> <button type="button"class="btn btn-secondary btn-lg btn-block"style="background-color:white; color:black">I'd like to Select an Image to View Matches</button>
@@ -23,6 +25,36 @@
 </a> 
 
 </div>
+
+<!-- Footer -->
+<footer style="margin-top:12%;"class="page-footer font-small special-color-dark pt-4">
+
+    <!-- Footer Elements -->
+
+      <!-- Social buttons -->
+      <ul style="margin-bottom: 0rem;"class="list-unstyled list-inline text-center">
+        <li class="list-inline-item">
+          <a style="color:black"target="_blank"href="https://github.com/shirleyilenechan/Foundation_Project"class="btn-floating btn-fb mx-1">
+            <i class="fab fa-github"></i>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a style="color:black"target="_blank"href="https://www.linkedin.com/in/shirleyilenechan/"class="btn-floating btn-tw mx-1">
+            <i class="fab fa-linkedin"></i>
+          </a>
+      </ul>
+      <!-- Social buttons -->
+
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center"> Throwing Shade <br>
+            © 2018 Copyright Shirley Chan
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
                         
 {% endblock %}
             

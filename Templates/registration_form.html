@@ -6,11 +6,11 @@
 body {background-color: black;}
 </style>
 
-
-<h2 style="margin-top:10%; text-align:center; font-size: 6rem; color:white"> Match Yo' Face</h2>
+<h2 style="margin-top:4%; text-align:center; font-size: 6rem; color:white"> Throwing Shade</h2>
+<h2 style="text-align:center; font-size: 5rem; color:white"> Registration</h2>
 <br>
 
-<div class="container"style="height:100%">
+<div class="container"style="height:50%">
 
 <form action ='/registration', method="post">
 
@@ -28,11 +28,11 @@ body {background-color: black;}
   <div class="form-row">
     <div class="form-group col-md-6">
     <label for="email"style="color:white">Email</label>
-    <input type="text"class="form-control"name="email"id="email"placeholder="Email">
+    <input type="email"class="form-control"name="email"id="email"placeholder="Email">
     </div>  
     <div class="form-group col-md-6">
       <label for="password"style="color:white">Password</label>
-      <input type="text"class="form-control"name="password"id="password"placeholder="Password">
+      <input type="password"class="form-control"name="password"id="password"placeholder="Password">
     </div>
   </div>
 
@@ -66,11 +66,42 @@ body {background-color: black;}
   </div>
   <br>
   <input type="submit"class="btn btn-primary"value="Register"style="
-    margin-left:45%;">
+    margin-left:46%;">
 
 </form>
   
-  <a style="margin-left:42%"href="/login"style="color:white">I would like to Login</a> 
+  <a style="margin-left:43%"href="/login"style="color:white">I would like to Login</a> 
 
 </div>
+
+
+ <!-- Footer -->
+<footer class="page-footer font-small special-color-dark">
+
+    <!-- Footer Elements -->
+
+      <!-- Social buttons -->
+      <ul style="margin-bottom: 0rem;"class="list-unstyled list-inline text-center">
+        <li class="list-inline-item">
+          <a style="color:white"target="_blank"href="https://github.com/shirleyilenechan/Foundation_Project"class="btn-floating btn-fb mx-1">
+            <i class="fab fa-github"></i>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a style="color:white"target="_blank"href="https://www.linkedin.com/in/shirleyilenechan/"class="btn-floating btn-tw mx-1">
+            <i class="fab fa-linkedin"></i>
+          </a>
+      </ul>
+      <!-- Social buttons -->
+
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div style="color:white"class="footer-copyright text-center"> Throwing Shade <br>
+            © 2018 Copyright Shirley Chan
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
 {% endblock %}

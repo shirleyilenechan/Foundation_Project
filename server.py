@@ -179,7 +179,6 @@ def display_user_image():
     if "user_id" in session:
         user = User.query.get(session["user_id"])
         user_images = user.userimages
-        print(user_images)
         return render_template("display_user_images.html", user_images=user_images)
     else:
         return redirect("/login")
