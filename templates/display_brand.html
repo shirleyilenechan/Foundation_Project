@@ -3,7 +3,7 @@
 
 {% block head %}
 <nav class="navbar navbar-dark"style="background-color:black">
-    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30">
+   <img src="/static/ThrowingShade.png"width="180"height="30">
     <a href="/home"style="color:white">Home</a> <a href='/submit_image'style="color:white">Submit an Image for Matching</a> <a href="/select_image"style="color:white">Select an Image to View My Matches</a>  <a href="/view_favorites"style="color:white">View My Favorites</a> <a href="/logout"> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
@@ -21,7 +21,7 @@
   <label for="foundation_review"><img style="height:20px; width:20px"src="https://www.shareicon.net/download/2017/05/09/885774_message.ico"> Reviews for {{foundation_brand.brand_name}}</label>
 <div style="height:300px;width:100%;border:1px solid black;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
     {% for review in reviews %}
-        <p style="width:250%;"id="review_content"> {{review.review_content}} </p>
+        <p style="width:250%;"id="review_content"> {{review.user.fname.capitalize()}} says: {{review.review_content}} </p>
         <br>
     {% endfor %}
 </div>

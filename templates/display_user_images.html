@@ -4,13 +4,13 @@
 
 {% block head %}
 <nav class="navbar navbar-dark"style="background-color:black">
-    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30">
+  <img src="/static/ThrowingShade.png"width="180"height="30">
   <a href="/home"style="color:white">Home</a>  <a href='/submit_image'style="color:white">Submit an Image for Matching</a> <a href="/view_favorites"style="color:white">View My Favorites</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
 <style> 
 
-img {object-fit: cover;}
+.userimages {object-fit: cover;}
 
 #myphotos {
   width:100%;
@@ -36,7 +36,7 @@ img {object-fit: cover;}
 <div class="container-fluid">
 <div id="myphotos"> 
 {% for image in user_images %}
-    <a href="/display_matches/{{image.image_id}}"> <img style="width:400px; height:400px"src="{{image.image_location}}"> 
+    <a href="/display_matches/{{image.image_id}}"> <img class="userimages"style="width:400px; height:400px"src="{{image.image_location}}"> 
     </a>
 {% endfor %} 
 </div> 

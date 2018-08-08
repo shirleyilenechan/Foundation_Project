@@ -4,11 +4,11 @@
 {% block head %}
 
 <style> 
-img {object-fit: cover;}
+.userimage {object-fit: cover;}
 </style>
 
 <nav class="navbar navbar-dark"style="background-color:black">
-    <img src="https://sassytownhouseliving.com/wp-content/uploads/2016/04/foundationShades2.png"width="30"height="30">
+   <img src="/static/ThrowingShade.png"width="180"height="30">
   <a href="/home"style="color:white">Home</a>  <a href='/submit_image'style="color:white">Submit an Image for Matching</a> <a href="/select_image"style="color:white">Select an Image to View My Matches</a> <a href="/view_favorites"style="color:white">View My Favorites</a> <a href="/logout"> <input type="button"value="Logout"/> </a>
 </nav>
 
@@ -40,7 +40,7 @@ img {object-fit: cover;}
                     <i class="fas fa-star-half"></i>
                     {% endif %}
                   </p> 
-                  <div> View Shade Comparison : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='100'width='100'src='{{foundation.shade_image_url}}'><img height='100'width='100'object-fit='cover'src='/{{image.image_location}}'></div>" >
+                  <div> View Shade Comparison : <a type="button"data-toggle="popover"data-trigger="hover"data-html="true"data-content="<div><img height='100'width='100'src='{{foundation.shade_image_url}}'><img class='userimage'height='100'width='100'object-fit='cover'src='/{{image.image_location}}'></div>" >
                     <img src="{{foundation.shade_image_url}}">
                   </a>
                 </div>
