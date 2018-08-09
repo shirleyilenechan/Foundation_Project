@@ -4,9 +4,9 @@ After=syslog.target network.target
 
 [Service]
 User=ubuntu
-ExecStart=/bin/bash -c "source /home/src/Foundation_Project/secrets.sh\
-&& source /home/src/Foundation_Project/env/bin/activate\
-&& python3 /home/src/Foundation_Project/server.py &>> /home/src/Foundation_Project/flask.log"
+ExecStart=/bin/bash -c "source /home/ubuntu/Foundation_Project/secrets.sh\
+&& source /home/ubuntu/Foundation_Project/env/bin/activate\
+&& python3 /home/ubuntu/Foundation_Project/server.py &>> /home/src/Foundation_Project/flask.log"
 Restart=always
 
 [Install]
