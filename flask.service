@@ -6,6 +6,7 @@ After=syslog.target network.target
 User=ubuntu
 ExecStart=/bin/bash -c "source /home/ubuntu/Foundation_Project/secrets.sh\
 && source /home/ubuntu/Foundation_Project/env/bin/activate\
+&& cd /home/ubuntu/Foundation_Project/\
 && python3 /home/ubuntu/Foundation_Project/server.py &>> /home/src/Foundation_Project/flask.log"
 Restart=always
 
