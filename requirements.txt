@@ -52,7 +52,7 @@ pytz==2018.5
 PyWavelets==0.5.2
 requests==2.19.1
 requests-oauthlib==1.0.0
-rsa==3.4.2
+rsa==4.1
 scikit-image==0.14.0
 scipy==1.1.0
 six==1.11.0
